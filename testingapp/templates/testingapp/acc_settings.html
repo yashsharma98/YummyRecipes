@@ -65,7 +65,7 @@
                                           </div>
                                           <!-- <div class=""> -->
                                             <div class="button-container">
-                                              <button id="submitButton" data-bs-toggle="modal" data-bs-target="#accountdeleteModal" type="button">Delete</button>
+                                              <button data-bs-toggle="modal" data-bs-target="#accountdeleteModal" type="button">Delete</button>
                                             </div>
                                           <!-- </div> -->
                                         </div>
@@ -405,29 +405,27 @@
 <div class="modal fade Modal-delete" id="accountdeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content logoutmodal deletemodal">
-          <div class="modal-header">
-              <h5 class="modal-title">Yummy Recipes</h5>
-              <button type="button" class="btn btn-transparent modal-close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="material-symbols-rounded md-top-closeicon">close</span></button>
-          </div>
 
           <div class="modal-body">
-              <h2>Delete account?</h2>
-              
-              <p2 class="del-te">Are you sure you want to delete your account ?</p2>
+            <div class="modal-body-header">
+
+              <h2 class="modal-body-text-color">Delete account?</h2>
+              <p class="del-text modal-body-text-color">Are you sure you want to delete your account ?</p>
               
               <div class="callout callout-warning">
-                  <h6><span class="material-symbols-rounded warning-icon" id="warning-icon">warning</span> You can't undo this action</h6>
+                  <p><span class="material-symbols-rounded warning-icon" id="warning-icon">warning</span> You can't undo this action</p>
               </div>
-          </div>
-          
-          <div class="modal-footer delete-modal-footer">
-              <button type="button" class="btn btn-light footerbtn" data-bs-dismiss="modal">Cancel</button>
+            </div>
+
+            <div class="modal-body-footer delete-modal-footer">
+              <button type="button" class="btn btn-transparent footer-btn cancel-btn" data-bs-dismiss="modal">Cancel</button>
               
               <form method="post" action="{% url 'delete_account' %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Delete</button>
               </form>
 
+          </div>
           </div>
       </div>
   </div>

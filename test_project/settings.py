@@ -31,8 +31,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-67u-yp=hkj)j^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-# When debug is set to false we need to serve static files (css, images) for ruuning locally from
-# a server (currently we are using AWS S3, for that we need id & secret key)
+'''When debug is set to false and to serve static files (css, images) in order to run the project locally 
+add your AWS_ACCESS_KEY_ID & AWS_SECRET_ACCESS_KEY in the else part of 'DATABASE_URL' in os.environ)
+'''
 
 # DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
