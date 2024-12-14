@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Yummy Recipes</title>
+    <style>
+        *{
+            font-family: Arial, sans-serif;
+            color: #3E3232;
+        }
+
+        .main-container{
+            background: #F5EDED;
+            border-radius: 25px;
+            padding: 4px 16px;
+        }
+
+        h1{
+            font-size: 2.3em;
+            margin: 0;
+            margin-top: 5px;
+            padding: 0;
+        }
+
+        p{
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        
+        <h1>Hi, {{name}}</h1>
+        <h2>Welcome to Yummy Recipes,</h2>
+        <p>We are excited to have you on board.</p>
+        <p>We hope you enjoy our recipes and find the perfect dishes to make!</p>
+
+        <br><br><br>
+        <p>Best regards,<br>Yummy Recipes Team</p>
+    </div>
+</body>
+</html>

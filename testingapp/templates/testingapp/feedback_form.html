@@ -1,0 +1,237 @@
+{% extends 'testingapp/newnavbar_navrail.html' %}
+
+
+
+{% load hitcount_tags %}
+
+{% load static %}
+
+{% load i18n %}
+
+{% block title %}
+<title>Feedback</title>
+{% endblock %}
+
+{% block weather_widget %}
+{% endblock %}
+
+{% block sm_weather %}
+{% endblock %}
+
+{% block content%}
+
+<body>
+
+    <div class="primary-wrapper">
+        
+        <div class="secondary-wrapper">
+
+            <div class="container container-flex container-flex-2">
+
+                <main role="main" class="home-main container-main">
+
+                    <div class="dynamic-recipes dynamic-header profile-heading">
+                        
+                        <h1><button class="btn btn-light back-btn" onclick="history.back()"><span class="material-symbols-rounded back-btn-icon">arrow_back</span></button>
+                            Feedback
+                        </h1>
+
+                        <div class="dynamic-card-container">
+                            
+                            <div class="user-detail-container">
+                                
+                                <div class="user-details">
+
+                                    <div class="user-deail-table feedback-wrapper">
+  
+                                        {% if user_feedback %}
+
+                                        <div class="table-column feedback-card-container mb-3">
+                                            {% for feedback in user_feedback reversed %}
+                                                {% if feedback_len == 1 %}
+                                                    <div class="card first-fd-card">
+                                                        <div class="d-flex">
+                                                            <div class="px-3 py-3 opacity-75">{{ forloop.counter }}.</div>
+                                                            <div class="py-2 w-100">
+                                                                <div class="card-header">
+                                                                    {{ feedback.subject }}
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <blockquote class="blockquote mb-0">
+                                                                    <h4 class="mb-3">{{ feedback.message }}</h4>
+                                                                    <footer>{{ feedback.timestamp }}</footer>
+                                                                    </blockquote>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    
+                                                {% elif feedback_len == 2 %}
+                                                    {% if forloop.first %}
+                                                        <div class="card feedback-card">
+                                                            <div class="d-flex">
+                                                                <div class="px-3 py-3 opacity-75">{{ forloop.counter }}.</div>
+                                                                <div class="py-2 w-100">
+                                                                    <div class="card-header">
+                                                                        {{ feedback.subject }}
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <blockquote class="blockquote mb-0">
+                                                                        <h4 class="mb-3">{{ feedback.message }}</h4>
+                                                                        <footer>{{ feedback.timestamp }}</footer>
+                                                                        </blockquote>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>  
+                                                    {% else %}
+                                                        <div class="card feedback-card">
+                                                            <div class="d-flex">
+                                                                <div class="px-3 py-3 opacity-75">{{ forloop.counter }}.</div>
+                                                                <div class="py-2 w-100">
+                                                                    <div class="card-header">
+                                                                        {{ feedback.subject }}
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <blockquote class="blockquote mb-0">
+                                                                        <h4 class="mb-3">{{ feedback.message }}</h4>
+                                                                        <footer>{{ feedback.timestamp }}</footer>
+                                                                        </blockquote>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                    {% endif %} 
+
+                                                {% else %}
+                                                
+                                                    <div class="card feedback-card">
+                                                        <div class="d-flex">
+                                                            <div class="px-3 py-3 opacity-75">{{ forloop.counter }}.</div>
+                                                            <div class="py-2 w-100">
+                                                                <div class="card-header">
+                                                                    {{ feedback.subject }}
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <blockquote class="blockquote mb-0">
+                                                                    <h4 class="mb-3">{{ feedback.message }}</h4>
+                                                                    <footer>{{ feedback.timestamp }}</footer>
+                                                                    </blockquote>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                {% endif %}
+                                                
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="d-flex justify-content-center mx-3">
+                                            <button type="button" data-bs-toggle="offcanvas" data-bs-target="#Feedbackoffcanvas" aria-controls="offcanvasBottom">Submit feedback</button>
+                                        </div>
+
+                                        {% else %}
+                                        <div class="table-column feedback-card-container no-feedback mb-3">
+                                            No feedback available!
+                                        </div>
+
+                                        <div class="d-flex justify-content-start">
+                                            <button type="button" data-bs-toggle="offcanvas" data-bs-target="#Feedbackoffcanvas" aria-controls="offcanvasBottom">Submit feedback</button>
+                                        </div>
+                                        {% endif %}
+                                        
+                                    </div>
+
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+
+                    </div>
+
+                </main>
+                
+            </div>
+ 
+        </div>
+
+        <div class="footer-wrapper">
+            {% include 'testingapp/footer.html' %}
+        </div>
+
+    </div>
+    
+    
+</body>
+
+<div class="offcanvas offcanvas-bottom comments-offcanvas feedback-offcanvas h-auto" tabindex="-1" id="Feedbackoffcanvas" aria-labelledby="offcanvasBottomLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasBottomLabel">Send feedback</h5>
+      <button class="cmt-offcanvas-btn">
+        <span class="material-symbols-rounded btn-close cmt-offcanvas-close" data-bs-dismiss="offcanvas" aria-label="Close">close</span>
+      </button>
+    </div>
+
+    <div class="offcanvas-body p-0 h-auto">
+    
+        <form method="POST" class="row m-0 g-4">
+                                            
+            {% csrf_token %}
+
+            <div class="col-md-6 exclude">
+                <input type="text" class="form-control" name="name" maxlength="100" required="required" id="id_name" value="{{user.get_full_name}}" readonly>
+            </div>
+            
+            <div class="col-md-6 exclude">
+                <input type="email" class="form-control" name="email" maxlength="254" required="required" id="id_email" value="{{user.email}}" readonly>
+            </div>
+            
+            <div class="col-12">
+                <input type="text" class="form-control" name="subject" maxlength="250" required="required" id="id_subject" placeholder="Subject">
+            </div>
+            
+            <div class="col-12">
+                <textarea class="form-control" name="message" required="" id="id_message" placeholder="Describe your feedback"></textarea>
+            </div>    
+
+            <div class="text-center mb-3">
+                <div class="form-btns">
+                  <button type="submit" class="btn btn-transparent"><span>Submit</span></button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        {% if 'feedback' in message.tags %}   
+            
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+            <div id="newToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex"> 
+                    <div class="toast-body">
+                        Feedback submitted;
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            var successToast = new bootstrap.Toast(document.getElementById('newToast'));
+            successToast.show();
+        </script>
+            
+        {% endif %}
+    {% endfor %}
+{% else %}
+    Yummy Recipes
+{% endif %}
+
+
+
+{% endblock %}

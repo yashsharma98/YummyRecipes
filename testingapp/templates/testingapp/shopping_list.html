@@ -1,0 +1,66 @@
+{% load hitcount_tags %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Shopping list - {{recipe_object.title}} </title>
+</head>
+
+<style>
+
+    .recipe-ingre{
+        background: whitesmoke;
+    }
+
+    .pdf-image{
+        text-align: center;
+        height: fit-content;
+        width: fit-content;
+    }
+
+    .rec-title h2{
+        font-size: 2.2em;
+    }
+
+    .recipe-data{
+        font-size: 1.45em;
+    }
+
+</style>
+
+<body>
+    <h1 style="text-align:center;font-size:3em;margin-bottom: 0;padding-top: 15px;">{{ recipe_object.title }}</h1>
+
+    <div class="pdf-image">
+        {% for image in recipe_object.photo_set.all %}
+            <img src="{{ image.image.path }}" alt="Recipe Image">
+        {% endfor %}
+    </div>
+
+    <br><br>
+
+    <h2 style="font-size: 2em;">Shopping list</h2>
+
+    <div class="recipe-data">
+
+        <ul>
+            {% for ingredient in cleaned_ingredients %}
+                <li>{{ ingredient.item }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+    
+
+
+
+
+    
+</body>
+</html>

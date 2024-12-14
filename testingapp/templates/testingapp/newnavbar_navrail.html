@@ -1,0 +1,2614 @@
+{% load static %}
+
+{% load hitcount_tags %}
+
+{% load i18n %}
+
+{% load humanize %}
+
+{% load read_time_pluralize %}
+
+{% url 'landingpg' as landingpg %}
+{% url 'explore' as explore %}
+{% url 'signup' as signup %}
+{% url 'login' as login %}
+{% url 'topostlogin' recipes.id as topostlogin %}
+{% url 'home' as home %}
+{% url 'newnavbarnavrail' as newnavbarnavrail %}
+{% url 'newui' as newui %}
+
+{% load notifications_tags %}
+
+{% load noti_date_filter %}
+
+{% url 'createpost' as createpost %}
+{% url 'search' as search %}
+{% url 'profile' as profile %}
+{% url 'trending' as trending %}
+{% url 'timeline' as timeline %}
+{% url 'aa' as aa %}
+{% url 'viewpost' post.id as viewpost %}
+{% url 'updateprofile' as updateprofile %}
+{% url 'updaterecipe' recipes.title recipes.id as updaterecipe %}
+<!-- {% url 'updateuserview' user.profile.id as updateuserview %} -->
+{% url 'updatepassword' as updatepassword %}
+{% url 'regusers' as regusers %}
+{% url 'navigationrail' as navigationrail %}
+{% url 'profiledetails' user.id as profiledetails %}
+{% url 'dashboard' as dashboard %}
+{% url 'blog_history' as blog_history %}
+{% url 'favourites' as favourites %}
+{% url 'compare_recipes' as compare_recipes %}
+{% url 'compare_recipes' pk as compare_recipes %}
+{% url 'compare_view' recipe_id1=recipe1.id recipe_id2=recipe2.id as comparing_recipes %}
+
+{% url 'generate_recipe' as generate_recipe %}
+
+{% url 'year_recap' as year_recap %}
+
+{% url 'feedback' as feedback %}
+
+{% url 'account_settings' as account_settings %}
+
+
+
+{% url 'appearance' as appearance %}
+
+<!-- {% url 'user-profile-dashboard' user.id as userprofiledashboard %} -->
+{% url 'change-theme' as 'change-theme' %}
+{% url 'tailwind' as 'tailwind' %}
+
+
+{% url 'recap' slug='auth_user_recipes' as auth_user_recap %}
+{% url 'recap' slug='top10' as top10_recap %}
+{% url 'recap' slug='top10breakfast' as top10_bf_recap %}
+{% url 'recap' slug='top10lunch' as top10_lnch_recap %}
+{% url 'recap' slug='top10dinner' as top10_dnr_recap %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" as="style" onload="this.rel='stylesheet'">
+  
+  <link rel="icon" type="image/x-icon" href="{% static 'testingapp/media/Newlogo.ico' %}">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  
+  <link id="mystylesheet" rel="stylesheet" href="{% static 'testingapp/base_navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'testingapp/main.css' %}">  
+
+  <link rel="stylesheet" href="{% static 'testingapp/landingpg.css' %}">
+
+  <link rel="stylesheet" href="{% static 'testingapp/animations.css' %}">
+  <script src="https://kit.fontawesome.com/1b42d32fed.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
+  {% block title %}
+    <title>Yummy Recipes</title>    
+  {% endblock %}
+
+  {% block css %}
+  {% endblock %}
+</head>
+
+{% include 'testingapp/basetheme.html' %}
+
+<body id="body-color">
+{% if user.is_authenticated %}
+
+    <!-- navbar -->
+    <nav class="navbar fixed-top navbar-expand-lg" id="navbar" data-primary-color="{{ user.userprofile.primary_color }}">
+        <div class="container-fluid">
+
+            <button class="btn btn-transparent navbar-offcanvas-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                <span class="material-symbols-rounded offcanvas-btn-icon">menu_open</span>
+            </button>
+
+            <div class="navrail-logo">
+                <svg class="nvarbar-circle-svg" jsname="maK7T" viewBox="0 0 47 47" xmlns="http://www.w3.org/2000/svg">
+                    <path class="nvarbar-circle-svg-path" opacity="1.0" d="M34.4458 5.34261C37.6659 5.30972 40.4257 7.83079 40.6834 11.0408C40.8308 12.8764 41.8179 14.5725 43.3585 15.6372C46.0524 17.499 46.8569 21.1021 45.1766 23.7809C44.2158 25.3127 44.0347 27.227 44.6859 28.9685C45.8248 32.0139 44.3666 35.3228 41.3901 36.4472C39.6881 37.0902 38.408 38.4915 37.9212 40.2446C37.0698 43.3103 33.9061 45.061 30.7703 44.2016C28.9772 43.7101 27.087 44.0631 25.6481 45.1583C23.1318 47.0733 19.4708 46.5972 17.3736 44.0822C16.1742 42.644 14.396 41.8139 12.5546 41.8327C9.33445 41.8656 6.5747 39.3445 6.31696 36.1345C6.16958 34.2989 5.18246 32.6028 3.64192 31.5381C0.947945 29.6763 0.143532 26.0732 1.82378 23.3944C2.78462 21.8626 2.96568 19.9483 2.31445 18.2068C1.17563 15.1614 2.63381 11.8525 5.61024 10.7281C7.3123 10.0851 8.59239 8.68384 9.07922 6.93071C9.93055 3.86498 13.0943 2.11426 16.2301 2.9737C18.0232 3.46517 19.9134 3.11215 21.3523 2.01704C23.8686 0.101991 27.5295 0.578086 29.6268 3.09312C30.8261 4.53133 32.6044 5.36141 34.4458 5.34261Z">
+                    </path>
+                </svg>
+    
+                <img src="{% static 'testingapp/media/NewLogo.png' %}" class="nrweb-logo" alt="Yummy Recipes" srcset="">
+
+                <div class="scroll-indicator"><div class="scroll-value">0%</div></div>
+            </div>
+
+            <div class="navbar-brand-name">
+                <a class="navbar-brand" href="{% url 'home' %}" id="navbar-brand-name">
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if 'welcome-back-message' in message.tags %}   
+                                
+                                <script>
+                                    $(document).ready(function() {
+                                        $('#navbar-brand-name').text('Welcome back, {{ user.first_name }}').fadeIn().delay(6000).fadeOut(function() {
+                                            $(this).text('Yummy Recipes').fadeIn();
+                                        });
+                                    });
+                                </script>
+                                
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        Yummy Recipes
+                    {% endif %}
+                </a>
+            </div>
+            
+                
+                <div class="navbar-sm-weather">
+                    <div class="weather-widget">
+                        <div class="container">
+
+                            <div class="hstack gap-2">
+                                
+                                {% block sm_weather %}
+                                    <div class="p-1">
+                                        {% if user.userlocation.location == '' %}
+
+                                        <div class="hstack gap-4" data-bs-toggle="modal" data-bs-target="#weatherModal" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Click to add location">
+                                            <div class="col-1">
+                                                <span class="material-symbols-rounded sm-location-icon rightside-searchicon" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Click to add location">add_location</span> 
+                                            </div>
+        
+                                        </div>
+                                        
+                                        {% else %}
+            
+                                        <div class="row" data-bs-toggle="modal" data-bs-target="#weatherModal">
+                                            <div class="col-4" style="padding: 0">
+                                                <img id="navbarweatherIcon2">
+                                            </div>
+                
+                                            <div class="col-6 rightside-searchicon weather-data" style="padding: 0;padding-left:5px;display: flex;align-items: center;">
+                                                <span id="navbartemperature2"></span> &nbsp; <span>°C</span> 
+                                            </div>
+                
+                                            <!-- <div class="col-2 change-location" style="padding: 0;display: flex;align-items: center;">
+                                                <span class="material-symbols-rounded" style="font-size: 1em;">location_on</span>
+                                            </div> -->
+                
+                                        </div>
+            
+                                    {% endif %}
+                                    </div>
+                                {% endblock %}
+
+                                <div class="p-1 sm-searchbar">
+                                    {% block sm_search-btn %}
+                                    <div class="rightside-searchbar">
+                                        <h5 class="active-modal-btn-bgcolor"><a data-bs-toggle="modal" data-bs-target="#searchModal"><span class="material-symbols-rounded rightside-searchicon">search</span></a></h5>
+                                    
+                                    </div>
+                                    
+
+                                    <!-- <li class="nav-item">
+                                        <div class="rightside-searchbar">
+                                            <span type="button" id="topoffcanvas" class="position-relative" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                                                <h5 class="active-offcanvas-btn-bgcolor">
+                                                    {% if notifications %}
+                                                    <span class="material-symbols-rounded rightside-searchicon change-notify-icon navicons notification-active">notifications_active</span>
+                                                    <span class="notification-badge"></span>
+                                                    {% else %}
+                                                    <span class="material-symbols-rounded change-notify-icon rightside-searchicon navicons">notifications</span>
+                
+                                                    {% endif %}
+                                                </h5>
+                                            </span>
+                                        </div>
+                                    </li> -->
+                                    {% endblock %}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    
+                    </div>
+                    
+                </div>
+
+            
+            <!-- right side image, search icon, notification on navbar -->
+            <div class="dropdown btn-group dropstart navbar-right-list-items">
+                <ul class="nav justify-content-end">
+
+                    {% block weather_widget %}
+                    <li class="nav-item">
+                        <div class="rightside-searchbar">
+                            <div class="weather-widget">
+                                <div class="container">
+
+                                    <div class="row" data-bs-toggle="modal" data-bs-target="#weatherModal">
+                                        <div class="col-4" style="padding: 0">
+                                            <img id="navbarweatherIcon">
+                                        </div>
+
+                                        <div class="col-6" style="padding: 0;padding-left:5px;display: flex;align-items: center;">
+                                            <span id="navbartemperature"></span> &nbsp; <span>°C</span> 
+                                        </div>
+
+                                        <!-- <div class="col-2 change-location" style="padding: 0;display: flex;align-items: center;">
+                                            <span class="material-symbols-rounded" style="font-size: 1em;">location_on</span>
+                                        </div> -->
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {% endblock %}
+
+
+
+                    <li class="nav-item">
+                        {% block search-btn %}
+                        <div class="rightside-searchbar">
+                            <span data-bs-toggle="modal" data-bs-target="#searchModal">
+                                <h5 class="active-modal-btn-bgcolor"><span class="material-symbols-rounded rightside-searchicon navicons">search</span></h5>
+                            </span>
+                        </div>
+                        {% endblock %}
+                    </li>
+
+                    <!-- Offcanvas top notifications -->
+                    <li class="nav-item">
+                        <div class="rightside-searchbar">
+                            <span type="button" id="topoffcanvas" class="position-relative" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                                <h5 class="active-offcanvas-btn-bgcolor">
+                                    {% if notifications %}
+                                    <span class="material-symbols-rounded rightside-searchicon change-notify-icon navicons notification-active">notifications_active</span>
+                                    <span class="notification-badge">{% live_notify_badge %}</span>
+                                    {% else %}
+                                    <span class="material-symbols-rounded change-notify-icon rightside-searchicon navicons">notifications</span>
+
+                                    {% endif %}
+                                </h5>
+                            </span>
+                        </div>
+                    </li>
+
+                    <!-- loggedin user image and dropdown -->
+                    <li class="nav-item">
+                        <div class="dropdown-center">
+                            <button class="nb-img-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <!-- <!-- <img src="{{ user.profile.profile_img.url }}" class="navbar-img-btn" style="width: 38px; height: 38px;" alt="Image"> -->
+                                
+                                <svg class="user-profile-circle-svg" jsname="maK7T" viewBox="0 0 47 47" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <mask id="mask-image" class="efadfa" x="0" y="0" width="100%" height="100%">
+                                            <path fill="#fff" d="M34.4458 5.34261C37.6659 5.30972 40.4257 7.83079 40.6834 11.0408C40.8308 12.8764 41.8179 14.5725 43.3585 15.6372C46.0524 17.499 46.8569 21.1021 45.1766 23.7809C44.2158 25.3127 44.0347 27.227 44.6859 28.9685C45.8248 32.0139 44.3666 35.3228 41.3901 36.4472C39.6881 37.0902 38.408 38.4915 37.9212 40.2446C37.0698 43.3103 33.9061 45.061 30.7703 44.2016C28.9772 43.7101 27.087 44.0631 25.6481 45.1583C23.1318 47.0733 19.4708 46.5972 17.3736 44.0822C16.1742 42.644 14.396 41.8139 12.5546 41.8327C9.33445 41.8656 6.5747 39.3445 6.31696 36.1345C6.16958 34.2989 5.18246 32.6028 3.64192 31.5381C0.947945 29.6763 0.143532 26.0732 1.82378 23.3944C2.78462 21.8626 2.96568 19.9483 2.31445 18.2068C1.17563 15.1614 2.63381 11.8525 5.61024 10.7281C7.3123 10.0851 8.59239 8.68384 9.07922 6.93071C9.93055 3.86498 13.0943 2.11426 16.2301 2.9737C18.0232 3.46517 19.9134 3.11215 21.3523 2.01704C23.8686 0.101991 27.5295 0.578086 29.6268 3.09312C30.8261 4.53133 32.6044 5.36141 34.4458 5.34261Z">
+                                            </path>
+                                        </mask>
+                                    </defs>
+                                    <image href="{{ user.profile.profile_img.url }}" mask="url(#mask-image)" x="0" y="0" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
+                                </svg>
+                            </button>
+
+                            <div class="dropdown-menu nb-rightimg-dropmenu" id="nb-rightimg-dropmenu" onclick="event.stopPropagation()">
+                                
+                                <div class="top-nb-dropmenu-content">
+                                    <p>{{request.user.email}}</p>
+                                    <div class="top-nb-dropmenu-img">
+                                        <!-- <img src="{{ user.profile.profile_img.url }}" alt="Avatar"> -->
+                                        <svg class="user-profile-circle-svg nb-profile-circle-svg" jsname="maK7T" viewBox="0 0 47 47" xmlns="http://www.w3.org/2000/svg">
+                                            <defs>
+                                                <mask id="mask-image" x="0" y="0" width="100%" height="100%">
+                                                    <path fill="#fff" d="M34.4458 5.34261C37.6659 5.30972 40.4257 7.83079 40.6834 11.0408C40.8308 12.8764 41.8179 14.5725 43.3585 15.6372C46.0524 17.499 46.8569 21.1021 45.1766 23.7809C44.2158 25.3127 44.0347 27.227 44.6859 28.9685C45.8248 32.0139 44.3666 35.3228 41.3901 36.4472C39.6881 37.0902 38.408 38.4915 37.9212 40.2446C37.0698 43.3103 33.9061 45.061 30.7703 44.2016C28.9772 43.7101 27.087 44.0631 25.6481 45.1583C23.1318 47.0733 19.4708 46.5972 17.3736 44.0822C16.1742 42.644 14.396 41.8139 12.5546 41.8327C9.33445 41.8656 6.5747 39.3445 6.31696 36.1345C6.16958 34.2989 5.18246 32.6028 3.64192 31.5381C0.947945 29.6763 0.143532 26.0732 1.82378 23.3944C2.78462 21.8626 2.96568 19.9483 2.31445 18.2068C1.17563 15.1614 2.63381 11.8525 5.61024 10.7281C7.3123 10.0851 8.59239 8.68384 9.07922 6.93071C9.93055 3.86498 13.0943 2.11426 16.2301 2.9737C18.0232 3.46517 19.9134 3.11215 21.3523 2.01704C23.8686 0.101991 27.5295 0.578086 29.6268 3.09312C30.8261 4.53133 32.6044 5.36141 34.4458 5.34261Z">
+                                                    </path>
+                                                </mask>
+                                            </defs>
+                                            <image href="{{ user.profile.profile_img.url }}" mask="url(#mask-image)" x="0" y="0" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
+                                        </svg>
+                                    </div>
+                                    <h5>
+                                        {% if user.profile.dob == todays_date %}
+                                            <b>Happy birthday, {{ request.user.first_name }}!</b>
+                                        {% else %}
+                                            Hi, {{ request.user.first_name }}!
+                                        {% endif %}
+                                    </h5>
+                                    
+                                    {% if request.path == account_settings %}
+                                        <a href="{% url 'account_settings' %}" class="dropdown top-nb-dropmenu-content-links child-active"><span class="dropmenu-text">Account settings</span>
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'account_settings' %}" class="dropdown top-nb-dropmenu-content-links"><span class="dropmenu-text">Account settings</span>
+                                        </a>
+                                    {% endif %}
+
+                                    {% if user.profile.dob == todays_date %}
+                                        <div class="confetti-animation">
+                                            <dotlottie-player src="https://lottie.host/b25db31b-46a9-4746-8a0e-aed9ccc222e3/pMFX1Y1pk5.json" class="dotlottie-confetti" background="transparent" speed="1" loop autoplay></dotlottie-player>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="dropmenu-container">
+                                    
+                                    <div class="dropmenu-details-wrapper dropmenu-details1" id="dropmenu-details-wrapper2"> 
+                                
+                                        {% if request.path == profile %}
+                                            <a href="{% url 'profile' %}">
+                                                <p class="dropdown-second-child first_child child-active" id="dropmenu-child-active1"><span class="material-symbols-rounded nb-dropmenu-icons">person_filled</span> <span class="dropmenu-text">Profile</span></p>
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'profile' %}">
+                                                <p class="dropdown-second-child first_child"><span class="material-symbols-rounded nb-dropmenu-icons">person_filled</span> <span class="dropmenu-text">Profile</span></p>
+                                            </a>
+
+                                        {% endif %}
+
+                                        {% if request.path == favourites %} 
+                                            <a href="{% url 'favourites' %}">
+                                                <p class="dropdown-second-child child-active"><span class="material-symbols-rounded nb-dropmenu-icons">star</span> <span class="dropmenu-text">Favourites</span></p>
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'favourites' %}">
+                                                <p class="dropdown-second-child"><span class="material-symbols-rounded nb-dropmenu-icons">star</span> <span class="dropmenu-text">Favourites</span></p>
+                                            </a>
+                                        {% endif %}
+
+                                        {% if request.path == blog_history %}
+                                            <a href="{% url 'blog_history' %}">
+                                                <p class="dropdown-second-child child-active"><span class="material-symbols-rounded nb-dropmenu-icons">history</span> <span class="dropmenu-text">History</span></p>
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'blog_history' %}">
+                                                <p class="dropdown-second-child"><span class="material-symbols-rounded nb-dropmenu-icons">history</span> <span class="dropmenu-text">History</span></p>
+                                            </a>
+                                        {% endif %}
+
+                                        <!-- <div class="dropdown dropstart dropmenu-links" id="appearance-dropdown"> -->
+
+                                        {% if request.path == appearance %}
+                                            <a href="{% url 'appearance' %}">
+                                                <p class="dropdown-second-child2 dropdown-second-child child-active" id="dropmenu-child-active2"><span class="material-symbols-rounded nb-dropmenu-icons">palette</span> <span class="dropmenu-text">Appearance</span>
+                                                    <span class="sub-text">Beta</span>
+                                                </p>
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'appearance' %}">
+                                                <p class="dropdown-second-child2 dropdown-second-child last-child"><span class="material-symbols-rounded nb-dropmenu-icons">palette</span> <span class="dropmenu-text">Appearance</span>
+                                                    <span class="sub-text nb-dropmenu-icons">Beta</span>
+                                                </p>
+                                            </a>
+                                        {% endif %}
+                                        
+                                    </div>
+
+                                    {% if request.path == profile or request.path == feedback %}
+                                        <div class="dropmenu-details-wrapper dropmenu-details1 dropmenu-details2" id="dropmenu-details-wrapper2"> 
+                                            {% if request.path == feedback %}
+                                                <a href="{% url 'feedback' %}">
+                                                    <p class="dropdown-second-child feedback child-active"><span class="material-symbols-rounded nb-dropmenu-icons">feedback</span> <span class="dropmenu-text">Feedback</span></p>
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'feedback' %}">
+                                                    <p class="dropdown-second-child feedback"><span class="material-symbols-rounded nb-dropmenu-icons">feedback</span> <span class="dropmenu-text">Feedback</span></p>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+
+                            
+                                    <div class="dropmenu-details-wrapper dropmenu-details-links" id="dropmenudetailslinks">                                        
+
+                                        <p>Last Login : {{user.last_login.date}}</p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+          </div>
+        </div>
+    </nav>
+
+    <!-- offcanvas -->
+    <div class="offcanvas offcanvas-start nav-offcanvas main-offcanvas" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+
+            <div class="offcanvas-title" id="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+
+                    <!-- inside offcanvas close btn -->
+                    <button type="button" class="offcanvas-close-btn" id="offcanvas-close-btn" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <span class="material-symbols-rounded close-btn-icon" id="offcanvasclosebtnicon">menu_open</span>
+                    </button>
+
+                    <h5 id="offcanvasbrandname">Yummy Recipes</h5>
+
+                    <div class="offcanvas-notification" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                        <div class="notification-body rightside-searchbar">
+                            {% if notifications %}
+                            <span class="material-symbols-rounded offcanvas-noti-icon rightside-searchicon change-notify-icon navicons notification-active">notifications_active</span>
+                            <span class="notification-badge">{% live_notify_badge %}</span>
+                            {% else %}
+                            <span class="material-symbols-rounded offcanvas-noti-icon change-notify-icon rightside-searchicon navicons">notifications</span>
+
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+          
+        </div>
+
+        <div class="offcanvas-body nav-offcanvas-body" id="navoffcanvasbody">
+            
+            <div class="offcanvas-body-container">
+
+                <div class="offcanvas-body-list body-links-first">
+                    <ul class="offcanvas-body-links">
+                        <li>
+                            <a class="main-links {% if request.path == home %} active {% endif %}" id="offcanvaslisttext1" href="{% url 'home' %}"><span class="material-symbols-rounded offcanvas-link-icons" id="offcanvaslinkicons1">home</span> Home</a>
+                        </li>
+
+                        {% if viewpost %}
+                            <!-- <li>
+                                <a class="main-links active" href="{% url 'viewpost' post.pk %}"><span class="material-symbols-rounded offcanvas-link-icons">dinner_dining</span> {{post.title}}</a>
+                            </li>  -->
+
+                            <li>
+                                {% if post %}
+                                    <a class="main-links active" href="{% url 'viewpost' post.pk %}">
+                                        <span class="material-symbols-rounded offcanvas-link-icons">
+                                            <div class="offcanvas-recipe-img">
+                                                {% for post in post.photo_set.all %}
+                                                    {% if forloop.first %}
+                                                        <div class="offcanvas-img-stack">
+                                                            <img src="{{ post.image.url }}" alt="{{ post.title }} Image">
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </span>
+                                        <span class="offcanvas-recipe-title">{{post.title}}</span>
+                                    </a>
+                                {% else %}
+                                    <a class="main-links active" href="{% url 'viewpost' post.pk %}"><span class="material-symbols-rounded offcanvas-link-icons">dinner_dining</span> {{post.title}}</a>
+                                {% endif %}
+                            </li> 
+
+                            {% elif compare_recipes %} 
+
+                            <li>
+                                {% if photo1 %}
+                                    <a class="main-links active" href="{% url 'compare_recipes' pk %}">
+                                        <span class="material-symbols-rounded offcanvas-link-icons">
+                                            <div class="offcanvas-recipe-img">
+                                                <div class="offcanvas-img-stack">
+                                                    <img src="{{ photo1.image.url }}">
+                                                </div>
+                                            </div>
+                                        </span> 
+                                        <span class="offcanvas-recipe-title">Compare</span>
+                                    </a>
+                                {% else %}
+                                    <a class="main-links active" href="{% url 'compare_recipes' pk %}"><span class="material-symbols-rounded offcanvas-link-icons">compare</span> Compare</a>
+                                {% endif %}
+                            </li>
+            
+                            {% elif comparing_recipes %} 
+                            <li>
+                                {% if photo1 and photo2 %}
+                                    <a class="main-links active" href="">
+                                        <span class="material-symbols-rounded offcanvas-link-icons">
+                                            <div class="offcanvas-comparing-img-stack image-stack">
+                                                <div class="offcanvas-comparing-img-item image-item">
+                                                    <img src="{{ photo1.image.url }}" alt="{{ recipe1.title }} Image">
+                                                </div>
+                                                <div class="offcanvas-comparing-img-item image-item">
+                                                    <img src="{{ photo2.image.url }}" alt="{{ recipe2.title }} Image">
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <span class="offcanvas-recipe-title2">Comparing</span>
+                                    </a>
+                                {% else %}
+                                    <a class="main-links active" href=""><span class="material-symbols-rounded offcanvas-link-icons">art_track</span> Comparing</a>
+                                {% endif %}
+                            </li>
+                               
+                            {% elif query %} 
+                            <li>
+                                <a class="main-links active" href=""><span class="material-symbols-rounded offcanvas-link-icons">action_key</span> Search</a>
+                            </li> 
+
+                            {% elif request.path == year_recap %} 
+                            <li>
+                                <a class="main-links active" href=""><span class="material-symbols-rounded offcanvas-link-icons">fast_rewind</span> {% now 'Y' %}</a>
+                            </li>
+                        
+                            {% elif updaterecipe %}
+                        
+                            <li>
+                                <a class="main-links active" href="{% url 'explore' %}"><span class="material-symbols-rounded offcanvas-link-icons">edit_note</span> {{recipes.title}}</a>
+                            </li>
+                        
+                        {% endif %}
+
+                        <li>
+                            <a class="main-links {% if request.path == createpost %} active {% endif %}" href="{% url 'createpost' %}" id="offcanvaslisttext2">
+                                <span class="material-symbols-rounded offcanvas-link-icons" id="offcanvaslinkicons2">add_circle</span>
+                                New Recipe
+                            </a>
+                        </li>
+
+                        <li>
+                            {% if request.path == dashboard %}
+                                <a class="main-links active" href="{% url 'dashboard' %}">
+                                    <span class="material-symbols-rounded offcanvas-link-icons">grid_view</span>
+                                    Dashboard
+                                </a>
+                            {% else %}
+                                <a class="main-links" href="{% url 'dashboard' %}" id="offcanvaslisttext3">
+                                    <span class="material-symbols-rounded offcanvas-link-icons"  id="offcanvaslinkicons3">grid_view</span>
+                                    Dashboard
+                                </a>
+                            {% endif %}
+                        </li>
+                                        
+                        <!-- <li>
+                            <a class="main-links {% if request.path == search %} active {% endif %}" href="" id="offcanvaslisttext4">
+                                <span class="material-symbols-rounded offcanvas-link-icons" id="offcanvaslinkicons4">search</span>
+                                Search
+                            </a>
+                        </li> -->
+                        
+                        <li>
+                            <a class="main-links {% if request.path == explore %} active {% endif %}" href="{% url 'explore' %}" id="offcanvaslisttext5">
+                                <span class="material-symbols-rounded offcanvas-link-icons" id="offcanvaslinkicons5">explore</span> 
+                                Explore
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="main-links {% if request.path == trending %} active {% endif %}" href="{% url 'trending' %}" id="offcanvaslisttext6">
+                                <span class="material-symbols-rounded offcanvas-link-icons" id="offcanvaslinkicons6">trending_up</span> 
+                                Trending
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a class="main-links {% if request.path == timeline %} active {% endif %}" href="{% url 'timeline' %}" id="offcanvaslisttext7">
+                                <span class="material-symbols-rounded offcanvas-link-icons" id="offcanvaslinkicons7">timeline</span> 
+                                Timeline
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="main-links {% if request.path == generate_recipe %} active {% endif %}" href="{% url 'generate_recipe' %}" id="offcanvaslisttext6">
+                                <svg width="30px" height="30px" class="offcanvas-link-icons" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" style="stop-color:#ff7d1a;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#6610fc;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M7.45284 2.71266C7.8276 1.76244 9.1724 1.76245 9.54716 2.71267L10.7085 5.65732C10.8229 5.94743 11.0526 6.17707 11.3427 6.29148L14.2873 7.45284C15.2376 7.8276 15.2376 9.1724 14.2873 9.54716L11.3427 10.7085C11.0526 10.8229 10.8229 11.0526 10.7085 11.3427L9.54716 14.2873C9.1724 15.2376 7.8276 15.2376 7.45284 14.2873L6.29148 11.3427C6.17707 11.0526 5.94743 10.8229 5.65732 10.7085L2.71266 9.54716C1.76244 9.1724 1.76245 7.8276 2.71267 7.45284L5.65732 6.29148C5.94743 6.17707 6.17707 5.94743 6.29148 5.65732L7.45284 2.71266Z" fill="url(#grad1)"></path>
+                                        <path opacity="0.5" d="M16.9245 13.3916C17.1305 12.8695 17.8695 12.8695 18.0755 13.3916L18.9761 15.6753C19.039 15.8348 19.1652 15.961 19.3247 16.0239L21.6084 16.9245C22.1305 17.1305 22.1305 17.8695 21.6084 18.0755L19.3247 18.9761C19.1652 19.039 19.039 19.1652 18.9761 19.3247L18.0755 21.6084C17.8695 22.1305 17.1305 22.1305 16.9245 21.6084L16.0239 19.3247C15.961 19.1652 15.8348 19.039 15.6753 18.9761L13.3916 18.0755C12.8695 17.8695 12.8695 17.1305 13.3916 16.9245L15.6753 16.0239C15.8348 15.961 15.961 15.8348 16.0239 15.6753L16.9245 13.3916Z" fill="url(#grad1)"></path>
+                                    </g>
+                                </svg>
+                                KitchenAI
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="main-links {% if request.path == blog_history %} active {% endif %}" href="{% url 'blog_history' %}" id="offcanvaslisttext8">
+                                <span class="material-symbols-rounded offcanvas-link-icons" id="offcanvaslinkicons8">history</span> 
+                                History
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="main-links {% if request.path == favourites %} active {% endif %}" href="{% url 'favourites' %}" id="offcanvaslisttext9">
+                                <span class="material-symbols-rounded offcanvas-link-icons" id="offcanvaslinkicons9">star</span> 
+                                Favourites
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <hr id="line-sep1">
+
+                <div class="offcanvas-body-list body-links-second">
+                    
+                    <h5 id="bodylinkssecond">Settings</h5>
+                    
+                    <ul class="offcanvas-body-links">
+                        
+                        <li>
+                            {% if request.path == profile %}
+                                <a class="main-links active" href="{% url 'profile' %}"><span class="material-symbols-rounded offcanvas-link-icons">person_filled</span> Profile</a>
+                            {% else %}
+                                <a class="main-links" href="{% url 'profile' %}" id="offcanvaslisttext10"><span class="material-symbols-rounded offcanvas-link-icons" id="offcanvaslinkicons10">person_filled</span> Profile</a>
+                            {% endif %}
+                        </li>
+                        
+                    </ul>
+                </div>
+
+                <hr id="line-sep2">
+
+                <div class="offcanvas-body-list body-links-third">
+                    
+                    <h5 id="bodylinksthird">Themes</h5>
+
+                    <ul class="offcanvas-body-links">
+                        <li>
+                            {% if request.path == appearance %}
+                            <a href="{% url 'appearance' %}" class="main-links active" id="offcanvaslisttext11"><span class="material-symbols-rounded offcanvas-link-icons"  id="offcanvaslinkicons11">palette</span> Appearance</a>
+                            {% else %}
+                            <a href="{% url 'appearance' %}" class="main-links" id="offcanvaslisttext12"><span class="material-symbols-rounded offcanvas-link-icons">palette</span> Appearance</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="logout-container" id="logoutcontainer">
+                <span>
+                    <ul>                         
+                        <li>
+                            <img src="{{ user.profile.profile_img.url }}" class="navbar-userprofile" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{{ request.user.get_full_name}}" style="width: 38px; height: 38px; border-radius:100%" alt="Image">
+                        </li>
+                        <!-- <li> <h4>{{ request.user.first_name }} {{ request.user.last_name }}</h4> </li> -->
+                    </ul>
+                </span>
+
+                <span>
+                    <button class="logout-btn" id="logoutbtn" data-bs-toggle="modal" data-bs-target="#logoutModal"><span class="material-symbols-rounded logout-icon">logout</span></button>
+                </span>
+            </div>
+        </div>
+
+
+        
+    </div>
+
+    <!-- navigationrail links -->                         
+    <div class="w3-sidebar w3-bar-block w3-collapse navrail" id="navrail">
+        <!-- <button class="w3-bar-item w3-button w3-large w3-hide-large" onclick="w3_close()"><span class="material-symbols-rounded close-btn">menu_open</span></button> -->
+        
+        <div class="nrlink-container">
+               
+            <div class="navrail-content">
+    
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'home' %}">
+                    <ul class="navrail-listitems">
+                        {% if request.path == home %} 
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active" id="navrailiconactive1">home</span></li>
+                            <li><span class="navrail-text navrail-text-active" id="navrail-text-active">Home</span></li>
+                        {% else %}
+                            <li><span class="material-symbols-rounded navrail-icons" id="navrailicon1">home</span></li>
+                            <li><span class="navrail-text" id="navrailtext1">Home</span></li>
+                        {% endif %}
+                    </ul>
+                </a>
+    
+                {% if viewpost %} 
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links viewpost-listitems" href="{% url 'viewpost' post.pk %}">
+                    <ul class="navrail-listitems" data-bs-custom-class="custom-popover" tabindex="0" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="<b>{{post.title}}</b>">
+                        {% if post %}
+                            <li>
+                                <div class="image-stack">
+                                    <div class="first-compare-image image-item">
+                                        {% for post in post.photo_set.all %}
+                                            {% if forloop.first %}
+                                                <img src="{{ post.image.url }}" alt="{{ post.title }} Image">
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active" id="navrailiconactive3">dinner_dining</span></li>
+                        {% endif %}
+                        <li><span class="navrail-text navrail-text-active" id="navrail-text-active">Recipe</span></li>
+                    </ul>
+                </a>
+
+                {% elif compare_recipes %} 
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'compare_recipes' pk %}">
+                    <ul class="navrail-listitems">
+                        <!-- <li><span class="material-symbols-rounded navrail-icons navrail-icons-active">compare</span></li> -->
+                        <li>
+                            {% if photo1 %}
+                                <div class="image-stack">
+                                    <div class="first-compare-image image-item">
+                                        <img src="{{ photo1.image.url }}" alt="{{ recipe1.title }} Image">
+                                    </div>
+                                </div>
+                            {% else %}
+                                <span class="material-symbols-rounded navrail-icons navrail-icons-active">compare</span>
+                            {% endif %}
+                        </li>
+                        <li><span class="navrail-text navrail-text-active" id="navrail-text-active">Compare</span></li>
+                    </ul>
+                </a>
+
+                {% elif comparing_recipes %} 
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links viewpost-listitems" href="" tabindex="0" data-bs-toggle="popover" data-bs-custom-class="custom-popover" data-bs-html="true" data-bs-trigger="hover focus" data-bs-content="<b>Comparing :</b> <br><br> <b>'{{recipe1.title}}</b> <br> with <br> <b>'{{recipe2.title}}'</b>">
+                    <ul class="navrail-listitems">
+                        <!-- <li><span class="material-symbols-rounded navrail-icons navrail-icons-active">art_track</span></li> -->
+                        <li>
+                            {% if photo1 and photo2 %}
+                                <div class="image-stack">
+                                    <div class="image-item">
+                                        <img src="{{ photo1.image.url }}" alt="{{ recipe1.title }} Image">
+                                    </div>
+                                    <div class="image-item">
+                                        <img src="{{ photo2.image.url }}" alt="{{ recipe2.title }} Image">
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </li>
+                        <li><span class="navrail-text navrail-text-active" id="navrail-text-active">Comparing</span></li>
+                    </ul>
+                </a>
+
+                {% elif query %} 
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="">
+                    <ul class="navrail-listitems">
+                        <li><span class="material-symbols-rounded navrail-icons navrail-icons-active">action_key</span></li>
+                        <li><span class="navrail-text navrail-text-active" id="navrail-text-active">Search</span></li>
+                    </ul>
+                </a>
+
+                {% elif request.path == year_recap %} 
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="">
+                    <ul class="navrail-listitems">
+                        <li><span class="material-symbols-rounded navrail-icons navrail-icons-active">fast_rewind</span></li>
+                        <li><span class="navrail-text navrail-text-active" id="navrail-text-active">{% now 'Y' %}</span></li>
+                    </ul>
+                </a>
+
+                {% elif updaterecipe %}
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links">
+                    <ul class="navrail-listitems">
+                        <li><span class="material-symbols-rounded navrail-icons navrail-icons-active" id="navrailiconactive4">edit_note</span></li>
+                        <li><span class="navrail-text navrail-text-active" id="navrail-text-active">Edit</span></li>
+                    </ul>
+                </a>
+                {% endif %}
+
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'createpost' %}">
+                    <ul class="navrail-listitems">
+                        {% if request.path == createpost %}
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active" id="navrailiconactive4">add_circle</span></li>
+                            <li><span class="navrail-text navrail-text-active" id="navrail-text-active">New recipe</span></li>
+                        {% else %}
+                            <li><span class="material-symbols-rounded navrail-icons" id="navrailicon2">add_circle</span></li>
+                            <li><span class="navrail-text" id="navrailtext2">New recipe</span></li>
+                        {% endif %}
+                    </ul>
+                </a>
+
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'dashboard' %}">
+                    <ul class="navrail-listitems">
+                        {% if request.path == dashboard %}
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active" id="navrailiconactive5">grid_view</span></li>
+                            <li><span class="navrail-text navrail-text-active" id="navrail-text-active">Dashboard</span></li>
+                        {% else %}
+                            <li><span class="material-symbols-rounded navrail-icons" id="navrailicon3">grid_view</span></li>
+                            <li><span class="navrail-text" id="navrailtext3">Dashboard</span></li>
+                        {% endif %}
+                    </ul>
+                </a>
+    
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'explore' %}">
+                    <ul class="navrail-listitems">
+                        {% if request.path == explore %} 
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active" id="navrailiconactive7">explore</span></li>
+                            <li><span class="navrail-text navrail-text-active" id="navrail-text-active">Explore</span></li>
+                        {% else %} 
+                            <li><span class="material-symbols-rounded navrail-icons" id="navrailicon5">explore</span></li>
+                            <li><span class="navrail-text" id="navrailtext5">Explore</span></li>
+                        {% endif %}
+                    </ul>
+                </a>
+    
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'trending' %}">
+                    <ul class="navrail-listitems">
+                        {% if request.path == trending %}
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active" id="navrailiconactive8">trending_up</span></li>
+                            <li><span class="navrail-text navrail-text-active" id="navrail-text-active">Trending</span></li>
+                        {% else %}
+                            <li><span class="material-symbols-rounded navrail-icons" id="navrailicon6">trending_up</span></li>
+                            <li><span class="navrail-text" id="navrailtext6">Trending</span></li>
+                        {% endif %}
+                    </ul>
+                </a>
+    
+                <!-- <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'timeline' %}"> 
+                    <ul class="navrail-listitems">
+                        {% if request.path == timeline %}
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active" id="navrailiconactive9">timeline</span></li>
+                            <li><span class="navrail-text navrail-text-active" id="navrail-text-active">Timeline</span></li>
+                        {% else %}
+                            <li><span class="material-symbols-rounded navrail-icons" id="navrailicon7">timeline</span></li>
+                            <li><span class="navrail-text" id="navrailtext7">Timeline</span></li>
+                        {% endif %}
+                    </ul>
+                </a> -->
+                
+                <!-- ai-link with gradient bg is above in this same page -->
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links" id="ai-link" href="{% url 'generate_recipe' %}"> 
+                    <ul class="navrail-listitems">
+                        {% if request.path == generate_recipe %}
+                            <li>
+                                <svg width="55px" height="30px" class="navrail-icons navrail-icons-active" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" style="stop-color:#ff7d1a;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#6610fc;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M7.45284 2.71266C7.8276 1.76244 9.1724 1.76245 9.54716 2.71267L10.7085 5.65732C10.8229 5.94743 11.0526 6.17707 11.3427 6.29148L14.2873 7.45284C15.2376 7.8276 15.2376 9.1724 14.2873 9.54716L11.3427 10.7085C11.0526 10.8229 10.8229 11.0526 10.7085 11.3427L9.54716 14.2873C9.1724 15.2376 7.8276 15.2376 7.45284 14.2873L6.29148 11.3427C6.17707 11.0526 5.94743 10.8229 5.65732 10.7085L2.71266 9.54716C1.76244 9.1724 1.76245 7.8276 2.71267 7.45284L5.65732 6.29148C5.94743 6.17707 6.17707 5.94743 6.29148 5.65732L7.45284 2.71266Z" fill="url(#grad1)"></path>
+                                        <path opacity="0.5" d="M16.9245 13.3916C17.1305 12.8695 17.8695 12.8695 18.0755 13.3916L18.9761 15.6753C19.039 15.8348 19.1652 15.961 19.3247 16.0239L21.6084 16.9245C22.1305 17.1305 22.1305 17.8695 21.6084 18.0755L19.3247 18.9761C19.1652 19.039 19.039 19.1652 18.9761 19.3247L18.0755 21.6084C17.8695 22.1305 17.1305 22.1305 16.9245 21.6084L16.0239 19.3247C15.961 19.1652 15.8348 19.039 15.6753 18.9761L13.3916 18.0755C12.8695 17.8695 12.8695 17.1305 13.3916 16.9245L15.6753 16.0239C15.8348 15.961 15.961 15.8348 16.0239 15.6753L16.9245 13.3916Z" fill="url(#grad1)"></path>
+                                    </g>
+                                </svg>
+                            </li>
+                            <!-- <li><span class="material-symbols-rounded navrail-icons navrail-icons-active" id="navrailiconactive10">star</span></li> -->
+                            <li><span class="navrail-text navrail-text-active" id="navrail-text-active">KitchenAI</span></li>
+                        {% else %}
+                        <li>
+                            <svg width="55px" height="30px" class="navrail-icons" viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#ff7d1a;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#6610fc;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M7.45284 2.71266C7.8276 1.76244 9.1724 1.76245 9.54716 2.71267L10.7085 5.65732C10.8229 5.94743 11.0526 6.17707 11.3427 6.29148L14.2873 7.45284C15.2376 7.8276 15.2376 9.1724 14.2873 9.54716L11.3427 10.7085C11.0526 10.8229 10.8229 11.0526 10.7085 11.3427L9.54716 14.2873C9.1724 15.2376 7.8276 15.2376 7.45284 14.2873L6.29148 11.3427C6.17707 11.0526 5.94743 10.8229 5.65732 10.7085L2.71266 9.54716C1.76244 9.1724 1.76245 7.8276 2.71267 7.45284L5.65732 6.29148C5.94743 6.17707 6.17707 5.94743 6.29148 5.65732L7.45284 2.71266Z" fill="url(#grad1)"></path>
+                                    <path opacity="0.5" d="M16.9245 13.3916C17.1305 12.8695 17.8695 12.8695 18.0755 13.3916L18.9761 15.6753C19.039 15.8348 19.1652 15.961 19.3247 16.0239L21.6084 16.9245C22.1305 17.1305 22.1305 17.8695 21.6084 18.0755L19.3247 18.9761C19.1652 19.039 19.039 19.1652 18.9761 19.3247L18.0755 21.6084C17.8695 22.1305 17.1305 22.1305 16.9245 21.6084L16.0239 19.3247C15.961 19.1652 15.8348 19.039 15.6753 18.9761L13.3916 18.0755C12.8695 17.8695 12.8695 17.1305 13.3916 16.9245L15.6753 16.0239C15.8348 15.961 15.961 15.8348 16.0239 15.6753L16.9245 13.3916Z" fill="url(#grad1)"></path>
+                                </g>
+                            </svg>
+                        </li>
+                            <!-- <li><span class="material-symbols-rounded navrail-icons" id="navrailicon8">star</span></li> -->
+                            <li><span class="navrail-text" id="navrailtext8">KitchenAI</span></li>
+                        {% endif %}
+                    </ul>
+                </a>
+    
+            </div>
+
+            <div class="logout-wrapper" id="logoutwrapper">
+                <div class="logout-link" id="logoutlink" data-bs-toggle="modal" data-bs-target="#logoutModal" id="logoutlink">
+                    <span class="material-symbols-rounded logouticon" id="logouticon">logout</span>
+                </div>
+            </div>
+
+        </div>
+
+        
+
+    </div>
+
+{% else %}    
+
+    <!-- navbar -->
+    <nav class="navbar fixed-top navbar-expand-lg">
+        <div class="container-fluid">
+
+            <button class="btn btn-transparent navbar-offcanvas-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                <span class="material-symbols-rounded offcanvas-btn-icon">menu_open</span>
+            </button>
+
+            <div class="navrail-logo">
+                <svg class="nvarbar-circle-svg" jsname="maK7T" viewBox="0 0 47 47" xmlns="http://www.w3.org/2000/svg">
+                    <path class="nvarbar-circle-svg-path" opacity="1.0" d="M34.4458 5.34261C37.6659 5.30972 40.4257 7.83079 40.6834 11.0408C40.8308 12.8764 41.8179 14.5725 43.3585 15.6372C46.0524 17.499 46.8569 21.1021 45.1766 23.7809C44.2158 25.3127 44.0347 27.227 44.6859 28.9685C45.8248 32.0139 44.3666 35.3228 41.3901 36.4472C39.6881 37.0902 38.408 38.4915 37.9212 40.2446C37.0698 43.3103 33.9061 45.061 30.7703 44.2016C28.9772 43.7101 27.087 44.0631 25.6481 45.1583C23.1318 47.0733 19.4708 46.5972 17.3736 44.0822C16.1742 42.644 14.396 41.8139 12.5546 41.8327C9.33445 41.8656 6.5747 39.3445 6.31696 36.1345C6.16958 34.2989 5.18246 32.6028 3.64192 31.5381C0.947945 29.6763 0.143532 26.0732 1.82378 23.3944C2.78462 21.8626 2.96568 19.9483 2.31445 18.2068C1.17563 15.1614 2.63381 11.8525 5.61024 10.7281C7.3123 10.0851 8.59239 8.68384 9.07922 6.93071C9.93055 3.86498 13.0943 2.11426 16.2301 2.9737C18.0232 3.46517 19.9134 3.11215 21.3523 2.01704C23.8686 0.101991 27.5295 0.578086 29.6268 3.09312C30.8261 4.53133 32.6044 5.36141 34.4458 5.34261Z">
+                    </path>
+                </svg>
+                
+                <img src="{% static 'testingapp/media/NewLogo.png' %}" class="nrweb-logo" alt="Yummy Recipes" srcset="">
+            </div>
+
+            <div class="navbar-brand-name"><a class="navbar-brand" href="{% url 'landingpg' %}">Yummy Recipes</a></div>
+            
+            <div class="navbar-sm-weather">
+                <div class="weather-widget">
+                    <div class="container">
+
+                        <div class="hstack gap-4">
+
+                            <div class="p-1 sm-searchbar">
+                                {% block sm_search-btn2 %}
+                                <div class="rightside-searchbar">
+                                    <h5 class="active-modal-btn-bgcolor"><a data-bs-toggle="modal" data-bs-target="#searchModal"><span class="material-symbols-rounded rightside-searchicon">search</span></a></h5>
+                                </div>
+                                {% endblock %}
+                            </div>
+
+                        </div>
+
+                    </div>
+                
+                </div>
+                
+            </div>
+
+            <div class="dropdown btn-group dropstart navbar-right-list-items">
+                <ul class="nav justify-content-end">
+                    <li class="nav-item">
+                        {% block search-btn2 %}
+                        <div class="rightside-searchbar">
+                            <h5 class="active-modal-btn-bgcolor"><a data-bs-toggle="modal" data-bs-target="#searchModal"><span class="material-symbols-rounded rightside-searchicon">search</span></a></h5>
+                        </div>
+                        {% endblock %}
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+    </nav>
+
+    <!-- offcanvas -->
+    <div class="offcanvas offcanvas-start nav-offcanvas" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+
+            <div class="offcanvas-title" id="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+
+                    <!-- inside offcanvas close btn -->
+                    <button type="button" class="offcanvas-close-btn" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <span class="material-symbols-rounded close-btn-icon">menu_open</span>
+                    </button>
+
+                    <h5>Yummy Recipes</h5>
+
+                </div>
+
+            </div>
+          
+        </div>
+
+        <div class="offcanvas-body nav-offcanvas-body">
+            
+            <div class="offcanvas-body-container">
+
+                <div class="offcanvas-body-list body-links-first">
+                    <ul class="offcanvas-body-links">
+                        <li>
+                            <a class="main-links {% if request.path == landingpg %} active {% endif %}" href="{% url 'landingpg' %}">
+                                <span class="material-symbols-rounded offcanvas-link-icons">food_bank</span> 
+                                Home
+                            </a>
+                        </li>
+
+                        {% if viewpost %}
+                        <li>
+                            <a class="main-links active" href="{% url 'login' %}">
+                                <span class="material-symbols-rounded offcanvas-link-icons">dinner_dining</span> 
+                                Recipe
+                            </a>
+                        </li> 
+
+                        {% elif query %} 
+                        <li>
+                            <a class="main-links active" href="">
+                                <span class="material-symbols-rounded offcanvas-link-icons">action_key</span> 
+                                Search
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% if request.path == login %}
+                            <li>
+                                <a class="main-links active" href="{% url 'login' %}">
+                                    <span class="material-symbols-rounded offcanvas-link-icons">login</span> 
+                                    Login
+                                </a>
+                            </li>
+
+                        {% elif request.path == topostlogin %}
+                            <li>
+                                <a class="main-links active" href="">
+                                    <span class="material-symbols-rounded offcanvas-link-icons">login</span> 
+                                    Login
+                                </a>
+                            </li>
+                        {% else %}
+
+                            <li>
+                                <a class="main-links" href="{% url 'login' %}">
+                                    <span class="material-symbols-rounded offcanvas-link-icons">login</span> 
+                                    Login
+                                </a>
+                            </li>
+
+                        {% endif %}
+
+                        <li>
+                            <a class="main-links {% if request.path == signup %} active {% endif %}" href="{% url 'signup' %}">
+                                <span class="material-symbols-rounded offcanvas-link-icons">account_circle</span> 
+                                Signup
+                            </a>
+                        </li>
+
+
+                        {% if request.path == landingpg %}
+                        
+                        {% else %}
+                        <li>
+                            <a class="main-links {% if request.path == explore %} active {% endif %}" href="{% url 'explore' %}">
+                                <span class="material-symbols-rounded offcanvas-link-icons">explore</span> 
+                                Explore
+                            </a>
+                        </li>
+
+                        {% endif %}
+
+                        <li>
+                            <a class="main-links {% if request.path == trending %} active {% endif %}" href="{% url 'trending' %}">
+                                <span class="material-symbols-rounded offcanvas-link-icons">trending_up</span> 
+                                Trending
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- navigationrail links -->
+    <div class="w3-sidebar w3-bar-block w3-collapse navrail" id="mySidebar">
+        <!-- <button class="w3-bar-item w3-button w3-large w3-hide-large" onclick="w3_close()"><span class="material-symbols-rounded close-btn">menu_open</span></button> -->
+        
+        <div class="nrlink-container">
+               
+            <div class="navrail-content">
+    
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'landingpg' %}">
+                    <ul class="navrail-listitems">
+                        {% if request.path == landingpg %}
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active" id="navrailicon1">food_bank</span></li>
+                            <li><span class="navrail-text navrail-text-active">Home</span></li>
+                        {% else %}
+                            <li><span class="material-symbols-rounded navrail-icons" id="navrailicon1">food_bank</span></li>
+                            <li><span class="navrail-text">Home</span></li>
+                        {% endif %}
+                    </ul>
+                </a>
+
+                {% if viewpost %} 
+                    <a class="dropdown-ite w3-bar-item w3-button navrail-links viewpost-listitems" href="{% url 'viewpost' post.pk %}">
+                        <ul class="navrail-listitems" data-bs-custom-class="custom-popover" tabindex="0" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="<b>{{post.title}}</b>">
+                            {% if recipe_img %}
+                                <li>
+                                    <div class="image-stack">
+                                        <div class="first-compare-image image-item" style="margin-left: -5px;">
+                                            <img src="{{ recipe_img.image.url }}" alt="{{ recipe1.title }} Image">
+                                        </div>
+                                    </div>
+                                </li>
+                            {% else %}
+                                <li><span class="material-symbols-rounded navrail-icons navrail-icons-active" id="navrailiconactive3">dinner_dining</span></li>
+                            {% endif %}
+                            <li><span class="navrail-text navrail-text-active" id="navrail-text-active">Recipe</span></li>
+                        </ul>
+                    </a>
+                    
+                {% elif query %} 
+                    <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="">
+                        <ul class="navrail-listitems">
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active">action_key</span></li>
+                            <li><span class="navrail-text navrail-text-active" id="navrail-text-active">Search</span></li>
+                        </ul>
+                    </a>
+
+                {% endif %}
+        
+                {% if request.path == login %} 
+                    <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'login' %}">
+                        <ul class="navrail-listitems"> 
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active">login</span></li>
+                            <li><span class="navrail-text navrail-text-active">Login</span></li>
+                        </ul>
+                    </a>
+
+                {% elif request.path == topostlogin %} 
+                    <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="">
+                        <ul class="navrail-listitems"> 
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active">login</span></li>
+                            <li><span class="navrail-text navrail-text-active">Login</span></li>
+                        </ul>
+                    </a>
+                    
+                {% else %}
+                    <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'login' %}">
+                        <ul class="navrail-listitems"> 
+                            <li><span class="material-symbols-rounded navrail-icons" id="navrailicon1">login</span></li>
+                            <li><span class="navrail-text">Login</span></li>
+                        </ul>
+                    </a>
+                {% endif %}
+
+
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'signup' %}">
+                    <ul class="navrail-listitems">
+                        {% if request.path == signup %}
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active">account_circle</span></li>
+                            <li><span class="navrail-text navrail-text-active">Signup</span></li>
+                        {% else %}
+                            <li><span class="material-symbols-rounded navrail-icons" id="navrailicon1">account_circle</span></li>
+                            <li><span class="navrail-text">Signup</span></li>
+                        {% endif %}
+                    </ul>
+                </a>
+        
+                {% if request.path == landingpg %}
+
+                {% else %}
+                    <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'explore' %}">
+                        <ul class="navrail-listitems">
+                            {% if request.path == explore %} 
+                                <li><span class="material-symbols-rounded navrail-icons navrail-icons-active">explore</span></li>
+                                <li><span class="navrail-text navrail-text-active">Explore</span></li>
+                            {% else %} 
+                                <li><span class="material-symbols-rounded navrail-icons" id="navrailicon1">explore</span></li>
+                                <li><span class="navrail-text">Explore</span></li>
+                            {% endif %}
+                        </ul>
+                    </a>
+                {% endif %}
+                
+
+                <a class="dropdown-ite w3-bar-item w3-button navrail-links" href="{% url 'trending' %}">
+                    <ul class="navrail-listitems">
+                        {% if request.path == trending %}
+                            <li><span class="material-symbols-rounded navrail-icons navrail-icons-active">trending_up</span></li>
+                            <li><span class="navrail-text navrail-text-active">Trending</span></li>
+                        {% else %}
+                            <li><span class="material-symbols-rounded navrail-icons" id="navrailicon1">trending_up</span></li>
+                            <li><span class="navrail-text">Trending</span></li>
+                        {% endif %}
+                    </ul>
+                </a>
+                
+            </div>
+
+        </div>
+
+    </div>
+
+
+{% endif %}
+
+
+{% block content %}
+
+    
+
+
+{% endblock %}
+</div>
+
+    
+
+</body>
+
+{% if user.is_authenticated %}
+
+    <!-- quick view offcanvas -->
+    {% if all_recipes %} 
+    {% for post in all_recipes %}
+    <div class="offcanvas offcanvas-end qv-offcanvas" tabindex="-1" id="quickviewModal{{post.pk}}" aria-labelledby="quickviewModalLabel" data-bgcolor="{{ post.color_3 }}">
+        <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="quickviewModalLabel" data-color="{{ post.color_7 }}">Yummy Recipes</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body qv-modal-body">
+
+            <div class="qv-modal-body-container">
+                <article class="article-featured">
+                    <div class="qv-offcanvas-img-container">
+                        {% for i in post.photo_set.all %}
+                            {% if forloop.counter0 == 0 %}
+                                <img src="{{ i.image.url }}" class="qv-offcanvas-img" alt="{{post.title}}">
+                            {% endif %}
+                            {% empty %}
+                                <img src="{% static 'testingapp/media/empty4.jpg' %}" class="modal-rec-img">
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="qv-offcanvas-title-container" data-qvbodybgcolor="{{ post.color_1 }}" data-color="{{ post.color_7 }}">
+                        <h3 class="article-title">{{post.title}}</h3>
+                        <p>
+                            <ul>
+                                <li><img src="{{ post.author.profile.profile_img.url }}" style="width: 30px; height: 30px; border-radius:100px" alt="Image"></li>
+                                <li><div class="text-truncate">{{post.author.first_name}} {{post.author.last_name}}</div>  {{post.get_date}} &#11825; {% get_hit_count for post %} views &#11825; {{ post.read_time|pluralize_min }}</li>
+                            </ul>
+                        </p>
+                    </div>
+
+                    <div class="qv-offcanvas-table-wrapper" data-qvbodybgcolor="{{ post.color_1 }}" data-color="{{ post.color_7 }}">
+                        <table class="table">
+                            
+                            <tbody class="qv-table-body">
+                            <tr>
+                                <th scope="row" colspan="2">Type</th>
+                                <td>{{post.type}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Category</th>
+                                <td>{{post.category}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Cuisine</th>
+                                <td>{{post.cuisine|cut:" cuisine"}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Prep time</th>
+                                <td>{{post.timing}} min</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Servings</th>
+                                <td>{{post.servings}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Difficulty</th>
+                                <td>{{post.difficulty}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Likes</th>
+                                <td>{{post.total_likes}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Dislikes</th>
+                                <td>{{post.total_dislikes}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% if not post.get_date == post.get_modified_date %}
+                        <div class="d-flex justify-content-center gap-3 mt-2 qv-modified-date-container">
+                            <div><small>Updated</small></div>
+                            <div>            
+                                <small>{{post.get_modified_date}}</small>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                </article>
+
+                <div class="footer-area" data-offcanvasfooterbgcolor="{{ post.color_3 }}" data-offcanvashovercolor="{{ post.color_2 }}">
+                    <a href="{% url 'viewpost' post.pk %}" class="qv-offcanvas-footer-link" data-color="{{ post.color_7 }}">View <span class="material-symbols-rounded qv-offcanvas-link-icon">trending_flat</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+{% else %}    
+
+    {% if all_recipes %}
+    {% for post in all_recipes %}
+    <div class="offcanvas offcanvas-end qv-offcanvas" tabindex="-1" id="quickviewModal{{post.pk}}" aria-labelledby="quickviewModalLabel">
+        <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="quickviewModalLabel">Yummy Recipes</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body qv-modal-body">
+            <div class="qv-modal-body-container">
+                <article class="article-featured">
+                    <div class="qv-offcanvas-img-container">
+                        {% for i in post.photo_set.all %}
+                            {% if forloop.counter0 == 0 %}
+                                <img src="{{ i.image.url }}" class="qv-offcanvas-img" alt="{{post.title}}">
+                            {% endif %}
+                            {% empty %}
+                                <img src="{% static 'testingapp/media/empty4.jpg' %}" class="modal-rec-img">
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="qv-offcanvas-title-container">
+                        <h3 class="article-title">{{post.title}}</h3>
+                        <p>
+                            <ul>
+                                <li><img src="{{ post.author.profile.profile_img.url }}" style="width: 30px; height: 30px; border-radius:100px" alt="Image"></li>
+                                <li><div class="text-truncate">{{post.author.first_name}} {{post.author.last_name}}</div>  {{post.get_date}} &#11825; {% get_hit_count for post %} views &#11825; {{ post.read_time|pluralize_min }}</li>
+                            </ul>
+                        </p>
+                        
+                    </div>
+
+                    <div class="qv-offcanvas-table-wrapper">
+                        <table class="table">
+                            
+                            <tbody class="qv-table-body">
+                            <tr>
+                                <th scope="row" colspan="2">Type</th>
+                                <td>{{post.type}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Category</th>
+                                <td>{{post.category}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Cuisine</th>
+                                <td>{{post.cuisine|cut:" cuisine"}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Prep time</th>
+                                <td>{{post.timing}} min</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Servings</th>
+                                <td>{{post.servings}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Difficulty</th>
+                                <td>{{post.difficulty}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Likes</th>
+                                <td>{{post.total_likes}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="2">Dislikes</th>
+                                <td>{{post.total_dislikes}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    {% if not post.get_date == post.get_modified_date %}
+                        <div class="d-flex justify-content-center gap-3 mt-2 qv-modified-date-container">
+                            <div><small>Updated</small></div>
+                            <div>            
+                                <small>{{post.get_modified_date}}</small>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- <a href="#" class="article-read-more">CONTINUE READING</a> -->
+                </article>
+
+                <div class="footer-area">
+                    <a href="{% url 'viewpost' post.pk %}" class="qv-offcanvas-footer-link">View <span class="material-symbols-rounded qv-offcanvas-link-icon">trending_flat</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+{% endif %}
+
+<!-- scroll to hide/show elements -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.dynamic-recipes,.all-recipes-cards,.dashboard-recipe-cards,.sidebar,.sidebar-cards,.footer,.sidebar-dashboard');
+    
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+          } else {
+            entry.target.classList.remove('in-view');
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.03
+      });
+  
+      cards.forEach(card => observer.observe(card));
+    
+    });
+</script>
+
+<!-- Popovers -->
+<script>
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+</script>
+
+<!-- Tooltip -->
+<script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>
+
+
+<!-- Added to favourites toast -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+    <div id="favRecipeToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex"> 
+            <div class="toast-body">
+                
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+  
+<!-- Removed from favourites toast -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+    <div id="removeRecipeToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex"> 
+            <div class="toast-body">
+                
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+  
+<!-- adding/removing favourites using ajax -->
+<script>
+$(document).ready(function() {
+    $('.favourite-link').click(function(e) {
+        e.preventDefault();  
+
+        var postLink = $(this);
+        var post_id = $(this).data('post-id');
+        var csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/fav/' + post_id + '/',
+            data: {
+                // 'post_id': post_id,
+                'csrfmiddlewaretoken': csrf_token,
+            },
+            success: function(response) {
+                postLink.find('.favourite-icon').toggleClass('favourite-added');
+                
+                var favouriteIcon = postLink.find('.favourite-icon-2');
+                favouriteIcon.toggleClass('favourite-added');
+
+                var newText = response.action === 'remove' ? 'Favourites' : 'Remove';
+                postLink.find('.fav-text').text(newText);
+
+                var tooltipTitle = (response.action === 'remove') ? 'Add to favourites' : 'Remove from favourites';
+                $('.favourite-icon[data-post-id="' + post_id + '"]').attr('data-bs-original-title', tooltipTitle).tooltip('update').tooltip('show');
+
+                // $('.favourite-link' + '[data-post-id="' + post_id + '"]').attr('data-bs-original-title', tooltipTitle).tooltip('show');
+
+                if (response.action === 'remove'){
+                    var removeToast = new bootstrap.Toast(document.getElementById('removeRecipeToast'));
+                    $('.toast-body').html('<b>"' + response.recipe_title + '"</b>' + ' removed from favourites');
+                    removeToast.show();
+                }
+                else {
+                    var favouriteToast = new bootstrap.Toast(document.getElementById('favRecipeToast'));
+                    $('.toast-body').html('<b>"' + response.recipe_title + '"</b>' + ' added to favourites');
+                    favouriteToast.show();
+                }
+                 
+                 updateUI(post_id, response.action === 'add');
+
+                if (response.action === 'remove') {
+                    setTimeout(function() {
+                        $('.remove-from-fav' + '[data-post-id="' + post_id + '"]').remove();
+
+                    }, 500); 
+                    // $('.recipe-cards' + '[data-post-id="' + postId + '"]').tooltip('hide');
+
+
+                }
+                    // postLink.tooltip('hide');
+
+               
+
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+
+
+function updateUI(postId, isFavorite) {
+            
+            var lnchPostElement = $('.recipe-cards[data-post-id="' + postId + '"]');
+            var lnchFavouriteIcon = lnchPostElement.find('.favourite-icon');
+
+            if (isFavorite) {
+                lnchFavouriteIcon.addClass('favourite-added');
+            $('.favourite-link[data-post-id="' + postId + '"]').tooltip(isFavorite ? 'hide' : 'hide').tooltip('hide');
+
+            } else {
+                lnchFavouriteIcon.removeClass('favourite-added');
+            $('.favourite-link[data-post-id="' + postId + '"]').tooltip(isFavorite ? 'hide' : 'hide').tooltip('hide');
+
+            }
+
+            
+            var allUrecipePostElement = $('.all-recipes-cards[data-post-id="' + postId + '"]');
+            var allUrecipeFavouriteIcon = allUrecipePostElement.find('.favourite-icon');
+
+            if (isFavorite) {
+                allUrecipeFavouriteIcon.addClass('favourite-added');
+                $('.favourite-link[data-post-id="' + postId + '"]').tooltip(isFavorite ? 'hide' : 'hide').tooltip('hide');
+
+
+            } else {
+                allUrecipeFavouriteIcon.removeClass('favourite-added');
+            $('.favourite-link[data-post-id="' + postId + '"]').tooltip(isFavorite ? 'hide' : 'hide').tooltip('hide');
+
+            }
+
+           
+            // $('.favourite-link' + '[data-post-id="' + postId + '"]').tooltip(isFavorite ? 'show' : 'hide');
+        }
+});
+</script>
+
+<!-- navrail items to scale to animate  -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const listItems = document.querySelectorAll(".navrail-listitems");
+    
+        listItems.forEach(function (item) {
+        item.addEventListener("click", function () {
+            
+            listItems.forEach(function (otherItem) {
+            otherItem.classList.remove("navrail-listitems-active");
+            });
+    
+            item.classList.add("navrail-listitems-active");
+        });
+        });
+    });
+</script>
+
+<!-- Adding class to keep the background color to logout while logout modal is opened -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const logoutLink = document.getElementById("logoutlink");
+
+        logoutLink.addEventListener("click", function () {
+            
+            logoutLink.classList.add("logoutlink-active");
+
+            setTimeout(function () {
+                logoutLink.classList.remove("logoutlink-active");
+            }, 200);
+        });
+    });
+</script>
+      
+<script>
+    let dropdowns = document.querySelectorAll('.dropdown-toggle')
+    dropdowns.forEach((dd)=>{
+        dd.addEventListener('click', function (e) {
+            var el = this.nextElementSibling
+            el.style.display = el.style.display==='block'?'none':'block'
+        })
+    })
+    
+    $("a.darktheme-btn").click(function() {
+       $("#dropdownMenuLink").dropdown("toggle");
+    });
+    
+    $("a.darktheme-btn").click(function() {
+       $("#multilevelDropdownMenu1").dropdown("toggle");
+    });
+    
+    // $("#appearance-dropdown").click(function () {
+    //             $("#appearance-dropdown").toggleClass("appearance-dropdown-bgcolor");
+    //         });
+</script>
+
+<!-- Logout Modal -->
+<div class="modal fade Modal-logout" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content logoutmodal">
+            <div class="modal-body">
+                <div class="modal-body-header">
+                    <h2 class="modal-body-text-color">Confirm logout</h2>
+                    <p class="del-text modal-body-text-color">Are you sure you want to logout?</p>
+                </div>
+
+                <div class="modal-body-footer" id="logoutfooter">
+                    <button type="button" class="btn btn-transparent footer-btn cancel-btn" data-bs-dismiss="modal">Cancel</button>
+                    <a class="btn btn-transparent modal-logout-btn" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Recipe search modal -->
+<div class="modal fade Modal-search" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-search modal-dialog-scrollable modal-fullscreen">
+        <div class="modal-content logoutmodal searchmodal">
+            <div class="modal-header">
+                <h5 class="modal-title search-modal-title" id="modal-header-container">Search</h5>
+                <button type="button" class="btn btn-transparent modal-close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="material-symbols-rounded md-top-closeicon">close</span></button>
+            </div>
+
+                <div class="search-modal-body" id="search-modal-body">
+                    <form method="GET" id="searchform" action="{% url 'searchresults' %}" class="searchbar" autocomplete="off">
+
+                        <div class="search-modal-container">
+                            
+                            <div class="search-modal-input-container">
+                            {% if query %} <!-- for searchresults page (showing the title in the search input) -->
+                                <input id="idquery" class="search-modal-input" type="text" name="query" placeholder="Search recipes, chefs and more" title="Search recipes" required="required" value="{{query}}">
+                            {% elif profile_details %}
+                                <input id="idquery" class="search-modal-input" type="text" name="query" placeholder="Search recipes, chefs and more" title="Search recipes" required="required" value="{{profile_details.get_full_name}}">
+                            {% else %}
+                                <input id="idquery" class="search-modal-input" type="text" name="query" placeholder="Search recipes, chefs and more" title="Search recipes" required="required">
+                            {% endif %}
+                            </div>
+                            <div class="search-icon">
+                                <button type="submit" onclick="submitForm()">
+                                    <span class="material-symbols-rounded">search</span>
+                                </button>
+                            </div>
+
+                            <svg class="search-circle-svg" jsname="maK7T" viewBox="0 0 47 47" xmlns="http://www.w3.org/2000/svg">
+                                <path class="search-svg-path" opacity="1.0" d="M34.4458 5.34261C37.6659 5.30972 40.4257 7.83079 40.6834 11.0408C40.8308 12.8764 41.8179 14.5725 43.3585 15.6372C46.0524 17.499 46.8569 21.1021 45.1766 23.7809C44.2158 25.3127 44.0347 27.227 44.6859 28.9685C45.8248 32.0139 44.3666 35.3228 41.3901 36.4472C39.6881 37.0902 38.408 38.4915 37.9212 40.2446C37.0698 43.3103 33.9061 45.061 30.7703 44.2016C28.9772 43.7101 27.087 44.0631 25.6481 45.1583C23.1318 47.0733 19.4708 46.5972 17.3736 44.0822C16.1742 42.644 14.396 41.8139 12.5546 41.8327C9.33445 41.8656 6.5747 39.3445 6.31696 36.1345C6.16958 34.2989 5.18246 32.6028 3.64192 31.5381C0.947945 29.6763 0.143532 26.0732 1.82378 23.3944C2.78462 21.8626 2.96568 19.9483 2.31445 18.2068C1.17563 15.1614 2.63381 11.8525 5.61024 10.7281C7.3123 10.0851 8.59239 8.68384 9.07922 6.93071C9.93055 3.86498 13.0943 2.11426 16.2301 2.9737C18.0232 3.46517 19.9134 3.11215 21.3523 2.01704C23.8686 0.101991 27.5295 0.578086 29.6268 3.09312C30.8261 4.53133 32.6044 5.36141 34.4458 5.34261Z">
+                                </path>
+                            </svg>
+
+                            <!-- {% if user.is_authenticated %}
+                                
+                                <div class="pages-options-autocomplete"></div>
+
+                                <div class="history-options-autocomplete"></div>
+
+                            {% endif %} -->
+
+                        </div>
+
+                        <div class="d-flex flex-nowrap search-autocomplete-chips">
+                            <div class="flex-shrink-0 search-chips">Breakfast recipes</div>
+                            <div class="flex-shrink-0 search-chips">Lunch recipes</div>
+                            <div class="flex-shrink-0 search-chips">Snacks recipes</div>
+                            <div class="flex-shrink-0 search-chips">Dinner recipes</div>
+                            <div class="flex-shrink-0 search-chips">American cuisines</div>
+                            <div class="flex-shrink-0 search-chips">Indian cuisines</div>
+                            <div class="flex-shrink-0 search-chips">Italian cuisines</div>
+                            <div class="flex-shrink-0 search-chips">Under 10 mins</div>
+                            <div class="flex-shrink-0 search-chips">Ready in 10 mins</div>
+                            <div class="flex-shrink-0 search-chips">Veg Indian recipes</div>
+                            <div class="flex-shrink-0 search-chips">Veg American recipes</div>
+                            <div class="flex-shrink-0 search-chips">Veg Italian recipes</div>
+                            <div class="flex-shrink-0 search-chips">Non veg recipes</div>
+                            <div class="flex-shrink-0 search-chips">Non veg Indian recipes</div>
+                            <div class="flex-shrink-0 search-chips">Non veg American recipes</div>
+                            <div class="flex-shrink-0 search-chips">Non veg Italian recieps</div>
+                            <div class="flex-shrink-0 search-chips">Veg Breakfast recipes</div>
+                            <div class="flex-shrink-0 search-chips">Veg Lunch recipes</div>
+                            <div class="flex-shrink-0 search-chips">Veg Snacks recipes</div>
+                            <div class="flex-shrink-0 search-chips">Veg Dinner recipes</div>
+                        </div>
+
+                        <!-- <div class="autocomplete"></div> -->
+
+                    </form>    
+
+                    <div class="filter-form-wrapper">
+                        <div class="filter-form-container">
+                            <form class="filter-form" id="filterform">
+                                <div class="row">
+                                    <div class="col">
+                                        <select class="form-select" id="typeSelect" name="type" title="Type of the recipe">
+                                            <option value="">{% if filter_values.type %} {{filter_values.type}} {% else %} Type {% endif %}</option>
+                                            <option value="Breakfast">Breakfast</option>
+                                            <option value="Lunch">Lunch</option>
+                                            <option value="Evening Snack">Evening Snack</option>
+                                            <option value="Dinner">Dinner</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <select class="form-select" id="cuisineSelect" name="cuisine" title="Cuisine">
+                                            <option value="">{% if filter_values.cuisine %} {{filter_values.cuisine}} {% else %} Cuisine {% endif %}</option>
+                                            <option value="Indian cuisine">Indian cuisine</option>
+                                            <option value="American cuisine">American cuisine</option>
+                                            <option value="Italian cuisine">Italian cuisine</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        {% if filter_values.timing %}
+                                            <input type="number" class="form-control" id="timeInput" name="timing" value="{{filter_values.timing}}" min="1" placeholder="Time (in min)" title="Preparation time">
+                                        {% else %}
+                                            <input type="number" class="form-control" id="timeInput" name="timing" min="1" placeholder="Time (in min)" title="Preparation time">
+                                        {% endif %}
+                                    </div>
+                                    <div class="col">
+                                        <select class="form-select" id="categorySelect" name="category" title="Category">
+                                            <option value="">{% if filter_values.category %} {{filter_values.category}} {% else %} Category {% endif %}</option>
+                                            <option value="Veg">Veg</option>
+                                            <option value="Non-Veg">Non-Veg</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <select class="form-select" id="difficultySelect" name="difficulty" title="Difficulty">
+                                            <option value="">{% if filter_values.difficulty %} {{filter_values.difficulty}} {% else %} Difficulty {% endif %}</option>
+                                            <option value="Easy">Easy</option>
+                                            <option value="Medium">Medium</option>
+                                            <option value="Hard">Hard</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        {% if filter_values.servings %}
+                                            <input type="number" id="servingsInput" name="servings" value="{{filter_values.servings}}" class="form-control" min="1" placeholder="Serves" title="Serving">
+                                        {% else %}
+                                            <input type="number" id="servingsInput" name="servings" class="form-control" min="1" placeholder="Serves" title="Serving">
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <div class="filter-form-button">
+                            <button type="button" id="filterButton" class="btn btn-light">Filter</button>
+                        </div>
+                    </div>
+                   
+                    <div class="autocomplete-widget">
+                        <div class="autocomplete-options-container" id="autocomplete-options-container">
+                            {% if user.is_authenticated %}
+                                <div class="autocomplete-pages-history-container">
+                                    <div class="pages-options-autocomplete"></div>
+
+                                    <div class="history-options-autocomplete"></div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% if recipes_rankings %}
+                    <div class="ranked_recipes">
+                        <div class="mb-3">
+                            <h6>Trending searches</h6>
+                        </div>
+                    
+                        {% for recipes in recipes_rankings %}
+                            <div class="d-flex position-relative trending-searches-container">
+                                {% for i in recipes.photo_set.all %}
+                                {% if forloop.counter0 == 0 %}
+                                    <img src="{{ i.image.url }}" class="flex-shrink-0 search-chips" alt="{{recipes.title}}">
+                                {% endif %}
+                                {% empty %}
+                                    <img src="{% static 'testingapp/media/empty4.jpg' %}" class="flex-shrink-0 search-chips">
+                                {% endfor %}
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mx-2">{{recipes.title}}</h6>
+                                    <a href="{% url 'viewpost' recipes.pk %}" class="stretched-link"></a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+              
+
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-light footerbtn" data-bs-dismiss="modal">Close</button>
+                <a class="btn btn-transparent footer-btn delete-btn logout-modal-btn" id="searchButton" class="btn btn-primary">Search</a>
+                
+                <button type="button" class="btn btn-transparent footer-btn delete-btn logout-modal-btn" id="submitButton" class="btn btn-primary">Save</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+<!-- show/hide the most searched recipes when input is not empty -->
+<script>
+   $('#idquery').keyup(function() {
+        if ($(this).val().length == 0) {
+            $('.ranked_recipes').show();
+        } 
+        else {
+            $('.ranked_recipes').hide();
+        }
+    }).keyup();
+</script>
+
+<!-- appending search-autocomplete-chips to search input when clicked -->
+<script>
+    function searchformchips(query) {
+        const searchinput = document.getElementById('idquery');
+        searchinput.value = query;
+        document.getElementById('searchform').submit(); 
+    }
+
+    document.querySelectorAll('.search-autocomplete-chips .search-chips').forEach(chip => {
+        chip.addEventListener('click', () => {
+            searchformchips(chip.textContent.trim());
+        });
+    });
+</script>
+
+<!-- appending filter form fields to search input for custom filtering -->
+<script>
+    document.getElementById("filterButton").addEventListener("click", function() {
+        var filterForm = document.getElementById("filterform");
+        var searchForm = document.getElementById("searchform");
+        var searchInput = document.getElementById("idquery");
+        var filterInputs = filterForm.querySelectorAll("input, select");
+
+        var fieldvalues= Array.from(filterInputs).some(function(input) {
+            return input.value.trim() !== "";
+        });
+
+        if (!fieldvalues) {
+            return;
+        }
+
+        var hiddeninputs = searchForm.querySelectorAll("input[type='hidden']");
+        hiddeninputs.forEach(function(hiddenInput) {
+            hiddenInput.remove();
+        });
+
+        var originalsearchvalue = searchInput.value.split("|")[0].trim();
+        searchInput.value = originalsearchvalue;
+
+        var filterValues = [];
+
+        filterInputs.forEach(function(input) {
+            if (input.value) {
+                var hiddenInput = document.createElement("input");
+                hiddenInput.type = "hidden";
+                hiddenInput.name = input.name;
+                hiddenInput.value = input.value;
+                searchForm.appendChild(hiddenInput);
+                filterValues.push(`${input.name}: ${input.value}`);
+            }
+        });
+
+        if (filterValues.length > 0) {
+            searchInput.value = filterValues.join(", ");
+        }
+
+        searchForm.submit();
+    });
+
+</script>                        
+
+<!-- When there is no more credits left (zero) to view recipe -->
+
+{% if messages %}
+    {% for message in messages %}
+        {% if 'no-more-credits' in message.tags %}                            
+            <div class="modal fade" id="messagesModal" tabindex="-1" aria-labelledby="messagesModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-search">
+                    <div class="modal-content logoutmodal deletemodal">
+                        
+                        <div class="modal-body">                    
+                            <div class="modal-body-header">
+                                <div class="callout callout-warning">
+                                    <h2><span class="material-symbols-rounded warning-icon" id="warning-icon">warning</span> {{ message }}</h2>
+                                </div>
+                            </div>
+
+                            <div class="modal-body-footer">
+                                <button type="button" class="btn btn-transparent footer-btn cancel-btn" data-bs-dismiss="modal">Close</button>
+                                <a href="{% url 'profile' %}#credits" class="btn btn-transparent footer-btn delete-btn logout-modal-btn">View credits</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function() {
+                    $('#navbar-brand-name').text('Yummy Recipes');
+                });
+                $(document).ready(function() {
+                    $('#messagesModal').modal('show');
+                });
+            </script>
+
+
+            <script>
+                AOS.init();
+            </script>
+
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+<!-- Notification offcanvas -->
+<div class="offcanvas offcanvas-end notification-offcanvas" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasTopLabel">
+        <span class="notification-title">
+            {% if notifications %}
+                Notifications 
+            {% endif %}
+            <!-- {% now "g:i" %} {% now "D, M j" %} -->
+        </span>
+      </h5>
+      <button type="button" class="btn btn-transparent modal-close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="material-symbols-rounded md-top-closeicon">close</span></button>
+    </div>
+    <div class="offcanvas-body">
+        {% if notifications %}
+            {% for notification in notifications %}
+                <div id="notification-{{ notification.id }}" class="alert alert-dismissible fade show alert-notification" role="alert">
+                    
+                    <div class="d-flex notification-container">
+                        {% if 'disliked' in notification.verb %}
+                        <div class="p-2">
+                            <span class="material-symbols-rounded notification-icons">thumb_down</span>
+                        </div>
+                        {% elif 'liked' in notification.verb %}
+                        <div class="p-2 new-not">
+                            <span class="material-symbols-rounded notification-icons">thumb_up</span>
+                            <!-- <img src="{{ notification.actor.profile.profile_img.url }}" style="width: calc(2vw + 10px);height: calc(2vw + 10px);border-radius: 100%;"> -->
+                        </div>
+                        {% endif %}
+
+                        {% if 'commented' in notification.verb %}
+                        <div class="p-2">
+                            <span class="material-symbols-rounded notification-icons">comment</span>
+                        </div>
+                        {% endif %}
+
+                        <!-- When current user starts following to other user -->
+                        {% if 'following' in notification.verb %}
+                            <div class="p-2">
+                                <img src="{{ notification.actor.profile.profile_img.url }}">
+                            </div>
+                        {% endif %}
+                        
+
+
+                        <div class="flex-grow-1">
+                            {% if 'disliked' in notification.verb or 'liked' in notification.verb %}
+                                <div class="flex-grow-1 main-notification-header">
+                                    <div class="p-2">{{ notification.verb }} recipe <strong>&#11825;</strong>
+                                        <!-- {{ notification.timestamp|timesince }} ago  -->
+                                        <!-- {{notification.timestamp|naturaltime}}  -->
+                                        {{notification.timestamp|total_days_ago}} 
+                                    </div>
+                                </div>
+
+                                <div class="p-2">
+                                    <b>{{ notification.actor.get_full_name }}</b>
+
+                                    {{ notification.verb }} your recipe
+
+                                    {% if notification.action_object %}
+                                        '<a href="{% url 'viewpost' notification.action_object.pk %}">{{ notification.action_object.title }}</a>'
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            {% if 'commented' in notification.verb %}
+                                <div class="flex-grow-1 main-notification-header">
+                                    <div class="p-2">Comment <strong>&#11825;</strong>
+                                        <!-- {{ notification.timestamp|timesince }} ago  -->
+                                        <!-- {{notification.timestamp|naturaltime}}  -->
+                                        {{notification.timestamp|total_days_ago}} 
+                                    </div>
+                                </div>
+
+                                <div class="p-2">
+                                    <b>{{ notification.actor.get_full_name }}</b>
+
+                                    {{ notification.verb }} 
+                                    
+                                    <b>"{{ notification.description}}"</b>
+
+                                    on your recipe
+
+                                    {% if notification.action_object %}
+                                        '<a href="{% url 'viewpost' notification.action_object.pk %}">{{ notification.action_object.title }}</a>'
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            <!-- When current user starts following to other user -->
+                            {% if 'following' in notification.verb %}
+                                <div class="flex-grow-1 main-notification-header">
+                                    <div class="p-2">Follower <strong>&#11825;</strong>
+                                        <!-- {{ notification.timestamp|timesince }} ago  -->
+                                        <!-- {{notification.timestamp|naturaltime}}  -->
+                                        {{notification.timestamp|total_days_ago}} 
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    <a href="{% url 'userchannelpage' first=notification.actor.first_name last=notification.actor.last_name pk=notification.actor.pk %}"> {{ notification.actor.get_full_name }}</a> started {{ notification.verb }} you 
+                                </div>
+                            {% endif %}
+                                                        
+                        </div>
+
+
+                        <!-- <div class="p-2">
+                            {% with photo=notification.action_object.photo_set.first %}
+                                <img src="{{ photo.image.url }}" alt="{{ notification.action_object.title }}" style="width: calc(2vw + 10px);height: calc(2vw + 10px);border-radius: 100%;">
+                            {% endwith %}
+                        </div> -->
+                        <div class="p-3">
+                            <button type="button" class="btn btn-transparent noti-alert-close-btn" aria-label="Close" onclick="removeNotification('{{ notification.id }}')"><span class="material-symbols-rounded">close</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- <script>
+                    $(document).ready(function() {
+                        $('.notification-offcanvas').offcanvas('show');
+                    });
+                </script> -->
+            {% endfor %}
+
+            <div class="notification-footer d-flex justify-content-end mx-2">
+                <button class="btn btn-transparent" onclick="clearAllNotifications()">Clear all</button>
+            </div>
+
+        {% else %}
+
+        <div class="no-notifications">
+            No notifications
+        </div>
+
+        {% endif %}
+        <div class="no-notifications">
+        </div>
+    </div>
+
+</div>
+
+<!-- Clearing particular notification for current user -->
+{% if notifications %}
+    {% for notification in notifications %}
+        <script>
+            function removeNotification(notificationId) {
+                
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'remove_notification' %}", 
+                    data: {
+                        'notification_id': notificationId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        $(`#notification-${notificationId}`).fadeOut('slow', function() {
+                            $(this).remove();
+
+                            if ($('.alert-notification').length === 0) {
+                                $('.notification-offcanvas').offcanvas('hide');
+                                $('.rightside-searchicon').removeClass('notification-active');
+                                $('.change-notify-icon').html('notifications');
+                                $('.notification-badge').remove();
+                                $('.notification-title').hide();
+                                $('.notification-footer').remove();
+                                $('.no-notifications').text('No notifications');
+                            }
+                        });
+                    }
+                });
+            }
+
+        </script>
+    {% endfor %}
+{% endif %}
+
+
+<!-- Clearing all notifications for current user -->
+<script>
+    function clearAllNotifications() {
+        
+        $.ajax({
+            type: "POST",
+            url: "{% url 'clear_all_notifications' %}",  
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                $('.alert-notification').fadeOut('slow', function() {
+                    $(this).remove();
+                });
+
+                $('.notification-offcanvas').offcanvas('hide');
+                $('.change-notify-icon').html('notifications');
+                $('.rightside-searchicon').removeClass('notification-active');
+                $('.notification-badge').remove();
+                $('.notification-title').hide()
+                $('.notification-footer').remove();
+                $('.no-notifications').text('No notifications');
+            }
+        });
+    }
+</script>
+
+<!-- Adding background color to search & notification icon in navbar when opened -->
+<script>
+    var searchModal = document.getElementById('searchModal');
+    searchModal.addEventListener('show.bs.modal', function () {
+        document.body.classList.add('search-modal-open');
+    });
+    searchModal.addEventListener('hide.bs.modal', function () {
+        document.body.classList.remove('search-modal-open');
+    });
+
+    var notifyOffcanvas = document.getElementById('offcanvasTop');
+    notifyOffcanvas.addEventListener('show.bs.offcanvas', function () {
+        document.body.classList.add('top-offcanvas-open');
+    });
+    notifyOffcanvas.addEventListener('hide.bs.offcanvas', function () {
+        document.body.classList.remove('top-offcanvas-open');
+    });
+</script>
+
+
+<!-- setting the focus to input in recipe search modal when modal is opened -->
+<script>
+$(document).ready(function () {
+    const $chips = $('.search-autocomplete-chips');
+    const $filterForm = $('.filter-form-wrapper');
+    const $ranked_recipes = $('.ranked_recipes');
+
+    $('#searchModal').on('shown.bs.modal', function () {
+        $chips.addClass('active').removeClass('hidden');
+        $filterForm.addClass('active').removeClass('hidden');
+        $ranked_recipes.addClass('active').removeClass('hidden');
+
+
+        const input = $('#idquery');
+        const value = input.val();
+        input.val('').val(value);
+        input.focus();
+        input[0].setSelectionRange(value.length, value.length);
+
+        // Add SVG animation when typing
+        input.on('input', function () {
+            const value = input.val();
+            if (value.trim() !== '') {
+                $('.search-circle-svg').addClass('animate-search-svg');
+            } else {
+                $('.search-circle-svg').removeClass('animate-search-svg');
+            }
+        });
+    });
+
+    $('#searchModal').on('hidden.bs.modal', function () {
+        $chips.removeClass('active').addClass('hidden');
+        $filterForm.removeClass('active').addClass('hidden');
+        $ranked_recipes.removeClass('active').addClass('hidden');
+
+    });
+
+});
+
+</script>
+
+<!-- Recipe search form script -->
+<script>
+    document.getElementById("idquery").addEventListener("keyup", function(event) {
+        const queryInput = document.getElementById('idquery');
+        
+        if (event.key === "Enter") {
+            event.preventDefault();
+            if (queryInput.value.trim() !== '') { 
+                document.getElementById("searchform").submit();
+            }
+        }
+    });
+
+    document.getElementById("searchform").addEventListener("submit", function(event) {
+        var queryInput = document.getElementById('idquery');
+        if (queryInput.value.trim() === '') {
+            event.preventDefault(); 
+            // alert();
+        }
+    });
+    
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        $('#logoutlink').on('click', function() {
+        $(this).addClass('clicked');
+    });
+
+    $('#logoutModal').on('show.bs.modal', function() {
+        $('#logoutlink').addClass('clicked');
+    });
+
+    $('#logoutModal').on('hidden.bs.modal', function() {
+        $('#logoutlink').removeClass('clicked');
+    });
+    });
+
+</script>
+
+
+<!-- weather modal -->
+<div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="weatherModalLabel" aria-hidden="true"> 
+    <div class="modal-dialog modal-dialog-centered modal-search">
+        <div class="modal-content logoutmodal creditmodal weathermodal">
+
+            <div class="modal-body">
+                <div class="modal-body-header">
+                    <h2 class="modal-body-text-color">Weather</h2>
+
+                    <form id="locationFormnew" method="post" action="{% url 'save_location' %}">
+                        {% csrf_token %}
+                    
+                        <input type="text" name="location" maxlength="100" value="{{user.userlocation.location}}" required="required" id="id_location" placeholder="Search for a location">
+                        <!-- <button type="submit">Save</button> -->
+                    </form>
+                    
+                    {% if not user.userlocation.location == '' %}
+                        <table class="table-borderless">
+                        <tr>
+                            <th><span class="material-symbols-rounded">location_on</span></th>
+                            <th>Location</th>
+                            <td><span id="Location"></span></td>
+                        </tr>
+                        <tr>
+                            <th><span class="material-symbols-rounded">thermostat</span></th>
+                            <th>Temperature</th>
+                            <td>
+                                <ul style="display: inline-block;">
+                                    <li><img id="weatherIcon" src="" alt="Weather Icon"></li>
+                                    <li><span id="temperature"></span> °C</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span class="material-symbols-rounded">cloud</span></th>
+                            <th>Description</th>
+                            <td><span id="Description"></span></td>
+                        </tr>
+                        <tr>
+                            <th><span class="material-symbols-rounded">humidity_low</span></th>
+                            <th>Humidity</th>
+                            <td><span id="Humidity"></span></td>
+                        </tr>
+                        <tr>
+                            <th><span class="material-symbols-rounded">air</span></th>
+                            <th>Wind speed</th>
+                            <td><span id="Wind_speed"></span> m/s</td>
+                        </tr>
+                        <tr>
+                            <th><span class="material-symbols-rounded">arrow_upward</span></th>
+                            <th>High</th>
+                            <td><span id="Min_temperature"></span> °C</td>
+                        </tr>
+                        <tr>
+                            <th><span class="material-symbols-rounded">arrow_downward</span></th>
+                            <th>Low</th>
+                            <td><span id="Max_temperature"></span> °C</td>
+                        </tr>
+                        </table>
+                    {% else %}
+                    {% endif %}
+                </div>
+                
+                <div class="modal-body-footer">
+                    <button type="button" class="btn btn-transparent footer-btn cancel-btn" data-bs-dismiss="modal">Close</button>
+                    <a class="btn btn-transparent footer-btn delete-btn logout-modal-btn" id="submitButton" class="btn btn-primary">Save</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Adding active class to weather location icon (in home) -->
+<script>
+    var weatherModal = document.getElementById('weatherModal');
+    weatherModal.addEventListener('show.bs.modal', function () {
+        document.body.classList.add('weather-modal-open');
+    });
+    weatherModal.addEventListener('hide.bs.modal', function () {
+        document.body.classList.remove('weather-modal-open');
+    });
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- submit & fetching weather data -->
+<script>
+    $(document).ready(function() {
+        function navbarupdateWeatherData() {
+
+            $.ajax({
+                url: "{% url 'save_location' %}",
+                type: 'GET',
+                success: function(response) {
+                    if (response.weather_data) {
+                        var weatherData = response.weather_data;
+                        var decodedLocation = decodeURIComponent(weatherData.location);
+                        var formattedLocation = decodedLocation.text().replace(/\+/g, ' ');
+                        
+                        $('.weather-data p').html(
+                            'Location: ' + formattedLocation + '<br>' +
+                            'Temperature: ' + weatherData.temp + '°C' + '<br>' +
+                            'Description: ' + weatherData.des
+                        );
+
+                        // Close the modal
+                        // $('#weatherModal').modal('hide');
+
+                    }
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.log('Error:', errorThrown);
+                }
+            });
+        }
+
+        function navbarsubmitForm() {
+            var form = $('#locationFormnew');
+            var formData = form.serialize();
+
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: formData,
+                success: function(response) {
+                    if (response.weather_data) {
+                        var weatherData = response.weather_data;                                                
+                        $('#Location').text(weatherData.location);
+                        $('#temperature').text(weatherData.temp);
+                        $('#Description').text(weatherData.des);
+                        $('#Humidity').text(weatherData.humidity);
+                        $('#Wind_speed').text(weatherData.wind_speed);
+                        $('#Min_temperature').text(weatherData.min);
+                        $('#Max_temperature').text(weatherData.max);
+
+
+                        $('#weatherIcon').attr('src', 'http://openweathermap.org/img/w/' + weatherData.icon + '.png');
+
+                        $('#navbartemperature').text(weatherData.temp);
+                        $('#navbarweatherIcon').attr('src', 'http://openweathermap.org/img/w/' + weatherData.icon + '.png');
+
+                        $('#navbartemperature2').text(weatherData.temp);
+                        $('#navbarweatherIcon2').attr('src', 'http://openweathermap.org/img/w/' + weatherData.icon + '.png');
+                            
+                    
+                    }
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.log('Error:', errorThrown);
+                }
+            });
+        }
+
+
+        navbarsubmitForm();
+
+        $('#id_location').on('keydown', function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        // fetch weather data and update HTML every 10 minutes
+        setInterval(navbarupdateWeatherData, 10 * 60 * 1000); 
+
+
+        $('#submitButton').on('click', function(event) {
+            event.preventDefault();
+            navbarsubmitForm();
+        });
+    });
+</script>
+
+
+<!-- Search autocomplete (from context_processors.py file for showing autocomplete in each template) -->
+
+<script>
+function autocomplete(inp, data) {
+    var currentFocus;
+    var autocompleteContainer = document.createElement("div");
+    autocompleteContainer.setAttribute("class", "autocomplete-container");
+    document.getElementById("autocomplete-options-container").appendChild(autocompleteContainer);
+
+    inp.addEventListener("input", function (e) {
+        var a, b, i, val = this.value.trim();
+        closeAllLists();
+        
+        if (!val) {
+            clearAdditionalOptions();
+            return false;
+        }
+        currentFocus = -1;
+        
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        autocompleteContainer.appendChild(a);
+
+        var suggestions = data.suggestions;
+        var history = data.history;
+
+        for (i = 0; i < suggestions.length; i++) {
+            var suggestionLower = suggestions[i].toLowerCase();
+            var valLower = val.toLowerCase();
+            var idx = suggestionLower.indexOf(valLower);
+            if (idx !== -1) {
+                b = document.createElement("DIV");
+                b.innerHTML = suggestions[i].substr(0, idx) + "<strong>" + suggestions[i].substr(idx, val.length) + "</strong>" + suggestions[i].substr(idx + val.length);
+                b.innerHTML += "<input type='hidden' value='" + suggestions[i] + "'>";
+                b.addEventListener("click", function (e) {
+                    inp.value = this.getElementsByTagName("input")[0].value;
+                    document.getElementById("searchform").submit();
+                });
+                b.classList.add("autocomplete-option");
+                a.appendChild(b);
+            }
+        }
+        
+        if (a.innerHTML === "") {
+            a.innerHTML = "<div>No results found</div>";
+        }
+
+        updateAdditionalOptions(val, suggestions);
+        fromHistoryOptions(val, history);
+    });
+
+    inp.addEventListener("keydown", function (e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+            currentFocus++;
+            addActive(x);
+        } else if (e.keyCode == 38) {
+            currentFocus--;
+            addActive(x);
+        } else if (e.keyCode == 13) {
+            e.preventDefault();
+            if (currentFocus > -1) {
+                if (x) x[currentFocus].click();
+            }
+        }
+    });
+
+    function addActive(x) {
+        if (!x) return false;
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        if (x[currentFocus].innerText !== "No results found") {
+            x[currentFocus].classList.add("autocomplete-active");
+            inp.value = x[currentFocus].innerText;
+        }
+    }
+
+    function removeActive(x) {
+        for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active");
+        }
+    }
+
+    function closeAllLists(elmnt) {
+        var items = document.querySelectorAll(".autocomplete-items");
+        if (items.length > 0) {
+            for (let i = 0; i < items.length; i++) {
+                if (!elmnt || (elmnt !== items[i] && elmnt !== inp)) {
+                    items[i].parentNode.removeChild(items[i]);
+                }
+            }
+        }
+        
+        if (inp.value.trim() === "") {
+            clearAdditionalOptions();
+        }
+    }
+
+    function clearAdditionalOptions() {
+        document.querySelector(".pages-options-autocomplete").innerHTML = "";
+        document.querySelector(".history-options-autocomplete").innerHTML = "";
+    }
+
+    function updateAdditionalOptions(val, suggestions) {
+        var additionalOptionsContainer = document.querySelector(".pages-options-autocomplete");
+        additionalOptionsContainer.innerHTML = "";
+        var additionalOptions = ['Home', 'New recipe', 'Profile', 'Trending', 'Dashboard', 'Credits', 'Explore', 'Timeline', 'Favourites', 'History', 'Appearance', 'Account settings', 'Update profile', 'Liked recipes', 'Disliked recipes', 'Views', 'Network', 'KitchenAI'];
+        var hasOptions = false;
+        additionalOptions.forEach(option => {
+            if (option.toUpperCase().indexOf(val.toUpperCase()) !== -1) {
+                var opt = document.createElement("div");
+                opt.innerText = option;
+                opt.addEventListener("click", function (e) {
+                    inp.value = option;
+                    document.getElementById("searchform").submit();
+                });
+                opt.classList.add("additional-option");
+                additionalOptionsContainer.appendChild(opt);
+                hasOptions = true;
+            }
+        });
+
+        if (hasOptions) {
+            var pagesHeader = document.createElement("div");
+            pagesHeader.classList.add("autocomplete-pages-heading");
+            pagesHeader.innerHTML = "<p>From pages</p>";
+            additionalOptionsContainer.prepend(pagesHeader);
+        }
+    }
+
+    function fromHistoryOptions(val, history) {
+        var historyOptionsContainer = document.querySelector(".history-options-autocomplete");
+        historyOptionsContainer.innerHTML = "";
+        var hasHistory = false;
+        history.forEach(option => {
+            if (option.toUpperCase().indexOf(val.toUpperCase()) !== -1) {
+                var opt = document.createElement("div");
+                opt.innerText = option;
+                opt.addEventListener("click", function (e) {
+                    inp.value = option;
+                    location.href = "{% url 'blog_history' %}";
+                });
+                opt.classList.add("additional-option");
+                historyOptionsContainer.appendChild(opt);
+                hasHistory = true;
+            }
+        });
+
+        if (hasHistory) {
+            var pagesHeader = document.createElement("div");
+            pagesHeader.classList.add("autocomplete-pages-heading");
+            pagesHeader.innerHTML = "<p>From your history</p>";
+            historyOptionsContainer.prepend(pagesHeader);
+        }
+    }
+}
+
+var autocomplete_results = {
+    'suggestions': [
+        '{% for results in autocomplete_list.suggestions %}',
+        "{{ results }}",
+        '{% endfor %}'
+    ],
+    'history': [
+        '{% for history_results in autocomplete_list.history %}',
+        "{{ history_results }}",
+        '{% endfor %}'
+    ]
+};
+
+autocomplete(document.getElementById("idquery"), autocomplete_results);
+
+</script>
+
+
+</html>

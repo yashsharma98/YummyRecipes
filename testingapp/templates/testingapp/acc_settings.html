@@ -1,0 +1,519 @@
+{% extends 'testingapp/newnavbar_navrail.html' %}
+
+{% load hitcount_tags %}
+
+{% load static %}
+
+
+{% block css %}
+{% endblock %}
+
+
+{% block title %}
+<title>Account settings</title>
+{% endblock %}
+
+{% block weather_widget %}
+{% endblock %}
+
+{% block sm_weather %}
+{% endblock %}
+
+
+{% block content%}
+
+<body>
+
+{% if user.is_authenticated %}
+
+  <div class="primary-wrapper">
+
+    <div class="secondary-wrapper">
+
+      <div class="container container-flex container-flex-2">
+
+        <main role="main" class="container-main">
+
+          <div class="dynamic-recipes dynamic-header tertiary-wrapper profile-heading">
+                   
+            <h1><button class="btn btn-light back-btn" onclick="history.back()"><span class="material-symbols-rounded back-btn-icon">arrow_back</span></button> 
+              Account settings
+            </h1>
+
+            <div class="dynamic-card-container acc-settings-wrapper">
+
+                <div class="settings-container">
+                  
+                  <h3>Delete account</h3>
+
+                  <div class="acc-set-child-containers">
+
+                      <div class="child-1">
+
+                          <div class="child-1-col">
+                              <div class="row-container">
+                                  <div class="row">
+                                      <div class="col col-1">
+                                          <span class="material-symbols-rounded">delete</span>
+                                      </div>
+          
+                                      <div class="col">
+                                        <div class="d-flex">
+                                          <div class="flex-grow-1">
+                                            <h4>Delete account</h4>
+                                            <p class="">This action cannot be undone</p>
+                                          </div>
+                                          <!-- <div class=""> -->
+                                            <div class="button-container">
+                                              <button id="submitButton" data-bs-toggle="modal" data-bs-target="#accountdeleteModal" type="button">Delete</button>
+                                            </div>
+                                          <!-- </div> -->
+                                        </div>
+                                          
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                      </div>
+
+                  </div>
+
+                  <h3>Email notification</h3>
+
+                  <div class="acc-set-child-containers">
+
+                    <div class="child-1">
+
+                      <div class="child-1-col">
+                          <div class="row-container">
+                            <div class="row">
+                              <div class="col col-1">
+                                <span class="material-symbols-rounded">mail</span>
+                              </div>
+  
+                              <div class="col">
+                                
+                                <div class="d-flex">
+                                  <div class="flex-grow-1">
+                                    <h4>Recieve email notification</h4>
+                                    
+                                      <div class="d-flex mt-1">
+                                        
+                                        
+                                        <div>
+                                          <form method="POST" action="{% url 'account_settings' %}" id="emailform">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="email_form" value="email_form">
+                                            {% if user.profile.send_email == False %}
+                    
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" name="send_email" id="id_send_email" role="switch" id="flexSwitchCheckDefault">
+                                                </div>
+                    
+                                            {% else %}
+                    
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" name="send_email" id="id_send_email" checked="" role="switch" id="flexSwitchCheckDefault">
+                                                </div>
+                    
+                                            {% endif %}
+                                          </form> 
+                                        </div>
+
+                                        <div class="mx-2">
+                                          {% if user.profile.send_email == False %}
+                                          Off
+                                          {% else %}
+                                            On
+                                          {% endif %}
+                                        </div>
+                                          
+                                      </div>
+                                  </div>
+                                  <!-- <div class=""> -->
+                                    <div class="button-container">
+                                      <button id="submitButton" type="button">Save</button>
+                                    </div>
+                                  <!-- </div> -->
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+
+                  <h3>Recipe goal</h3>
+
+                  <div class="acc-set-child-containers">
+
+                      <div class="child-1">
+
+                          <div class="child-1-col">
+                              <div class="row-container">
+                                  <div class="row">
+                                      <div class="col col-1">
+                                          <span class="material-symbols-rounded">spoke</span>
+                                      </div>
+          
+                                      <div class="col">
+                                        <div class="d-flex">
+                                          <div class="flex-grow-1">
+                                            <h4>Set your target</h4>
+                                            {% if goal_form.instance.goal %}
+                                              
+                                              {% if goal_form.instance.goal > 1 %}
+                                                <p>You've set a goal of {{goal_form.instance.goal}} recipes for {{ current_year }}!</p>
+                                              {% else %}
+                                                <p>You've set a goal of {{goal_form.instance.goal}} recipe for {{ current_year }}!</p>
+                                              {% endif %}
+                                              
+                                            {% else %}
+                                              <p>Define your cooking target for {{ current_year }}</p>
+                                            {% endif %}
+
+                                              <!-- <p> -->
+                                                <div class="recipe-goal-form">
+                                                  <form method="post" action="{% url 'account_settings' %}" id="recipegoalform">
+                                                    {% csrf_token %}
+
+                                                    <input type="hidden" name="recipes_goal" value="recipes_goal">
+                                                    {% if goal_form.instance.goal %}
+                                                      <input type="number" name="goal" value="{{goal_form.instance.goal}}" required="" id="id_goal" placeholder="Set a goal">
+                                                    {% else %}
+                                                      <input type="number" name="goal" value="0" required="" id="id_goal" placeholder="Set a goal">
+                                                    {% endif %}
+                                                  </form>
+                                                </div>
+                                              <!-- </p> -->
+                                          </div>
+                                          <!-- <div> -->
+                                            <div class="button-container">
+                                              <button type="submit" id="recipegoalformBtn">Mark</button>
+                                            </div>
+                                          <!-- </div> -->
+                                        </div>
+                                          
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                      </div>
+
+                  </div>
+
+
+                  <h3>Set preference <span class="material-symbols-rounded" data-bs-custom-class="custom-popover" 
+                    tabindex="0" data-bs-html="true" data-bs-toggle="popover" data-bs-trigger="hover focus" 
+                    data-bs-content="<span>This will replace the default time based recipes in home page</span>">info</span></h3>
+
+                  <div class="d-flex justify-content-between acc-set-child-containers acc-set-child-containers-clear">
+                    
+                    <div class="preference-form">
+                      <form method="post" action="{% url 'account_settings' %}" id="preferenceform">
+                        {% csrf_token %}
+
+                        <input type="hidden" name="preference_form" value="preference_form">
+                        
+                        <div class="container">
+
+                          <div class="row">
+
+                            <!-- type (breakfast,dinner,etc) -->
+                            <div class="col-lg-4 col-md-12 col-12 col-sm-12">
+                              <!-- <h6>Type</h6> -->
+                              {% if preference_form.preference_type.value %}
+                                <select name="preference_type" id="preference_type" class="custom-select">
+                                  {% if preference_form.preference_type.value == 'Evening Snack recipes' %}
+                                    <option value="{{preference_form.preference_type.value}}" hidden>Snacks recipes</option>                            
+                                  {% else %}
+                                    <option value="{{preference_form.preference_type.value}}" hidden>{{preference_form.preference_type.value}}</option> 
+                                  {% endif %}                
+
+                                  <option value="Select">Select</option>
+                                  
+                                  {% if preference_form.preference_type.value == 'Breakfast recipes' %}
+                                    <option value="Breakfast recipes" class="preference-option-active">Breakfast recipes</option>
+                                  {% else %}
+                                    <option value="Breakfast recipes">Breakfast recipes</option>
+                                  {% endif %}
+
+                                  {% if preference_form.preference_type.value == 'Lunch recipes' %}
+                                    <option value="Lunch recipes" class="preference-option-active">Lunch recipes</option>
+                                  {% else %}
+                                  <option value="Lunch recipes">Lunch recipes</option>
+                                  {% endif %}
+
+                                  {% if preference_form.preference_type.value == 'Evening Snack recipes' %}
+                                   <option value="Evening Snack recipes" class="preference-option-active">Snacks recipes</option>
+                                  {% else %}
+                                    <option value="Evening Snack recipes">Snacks recipes</option>
+                                  {% endif %}
+
+                                  {% if preference_form.preference_type.value == 'Dinner recipes' %}
+                                    <option value="Dinner recipes" class="preference-option-active">Dinner recipes</option>
+                                  {% else %}
+                                    <option value="Dinner recipes">Dinner recipes</option>
+                                  {% endif %}
+                                </select>
+                              {% elif preference_form.preference_type.value == 'Select' or preference_form.preference_type.value == '' %}
+                                <select name="preference_type" id="preference_type">
+                                  <option value="" hidden>Type preference</option>
+                                  <option value="Breakfast recipes">Breakfast recipes</option>
+                                  <option value="Lunch recipes">Lunch recipes</option>
+                                  <option value="Evening Snack recipes">Snacks recipes</option>
+                                  <option value="Dinner recipes">Dinner recipes</option>
+                                </select>
+                              {% endif %}
+                            </div>
+
+                            <!-- category -->
+                            <div class="col-lg-4 col-md-12 col-sm-12">
+                              <!-- <h6>Category</h6> -->
+                              {% if preference_form.preference_category.value %}
+                                <select name="preference_category" id="id_preference_category">
+                                  <option value="{{preference_form.preference_category.value}}" hidden>{{preference_form.preference_category.value}}</option>
+                                  
+                                  <option value="Select">Select</option>
+                                  
+                                  {% if preference_form.preference_category.value == 'Veg recipes' %}
+                                    <option value="Veg recipes" class="preference-option-active">Veg recipes</option>
+                                  {% else %}
+                                    <option value="Veg recipes">Veg recipes</option>
+                                  {% endif %}
+                                  
+                                  {% if preference_form.preference_category.value == 'Non-Veg recipes' %}
+                                    <option value="Non-Veg recipes" class="preference-option-active">Non-Veg recipes</option>
+                                  {% else %}
+                                    <option value="Non-Veg recipes">Non-Veg recipes</option>
+                                  {% endif %}
+                                </select>
+                              {% elif preference_form.preference_category.value == 'Select' or preference_form.preference_category.value == '' %}
+                                <select name="preference_category" id="id_preference_category">
+                                  <option value="Select" hidden>Category preference</option>
+                                  <option value="Veg recipes">Veg recipes</option>
+                                  <option value="Non-Veg recipes">Non-Veg recipes</option>
+                                </select>
+                              {% endif %}
+                            </div>
+
+                            <!-- cuisines -->
+                            <div class="col-lg-4 col-md-12 col-sm-12">                       
+                              <!-- <h6>Cuisine</h6> -->
+                              {% if preference_form.preference_cuisine.value %}
+                                <select name="preference_cuisine" id="id_preference_cuisine">
+                                  <option value="{{preference_form.preference_cuisine.value}}" hidden>{{preference_form.preference_cuisine.value}}</option>
+                                  
+                                  <option value="Select">Select</option>
+
+                                  {% if preference_form.preference_cuisine.value == 'Indian cuisine' %}
+                                    <option value="Indian cuisine" class="preference-option-active">Indian cuisine</option>
+                                  {% else %}
+                                    <option value="Indian cuisine">Indian cuisine</option>
+                                  {% endif %}
+
+                                  {% if preference_form.preference_cuisine.value == 'American cuisine' %}
+                                    <option value="American cuisine" class="preference-option-active">American cuisine</option>
+                                  {% else %}
+                                    <option value="American cuisine">American cuisine</option>
+                                  {% endif %}
+
+                                  {% if preference_form.preference_cuisine.value == 'Italian cuisine' %}
+                                    <option value="Italian cuisine" class="preference-option-active">Italian cuisine</option>
+                                  {% else %}
+                                    <option value="Italian cuisine">Italian cuisine</option>
+                                  {% endif %}
+                                </select>
+                              {% elif preference_form.preference_cuisine.value == 'Select' or preference_form.preference_cuisine.value == '' %}
+                                <select name="preference_cuisine" id="id_preference_cuisine">
+                                  <option value="" hidden>Cuisine preference</option>
+                                  <option value="Indian cuisine">Indian cuisine</option>
+                                  <option value="American cuisine">American cuisine</option>
+                                  <option value="Italian cuisine">Italian cuisine</option>
+                                </select>
+                              {% endif %}
+                            </div>
+
+                          </div>
+
+                        </div>
+
+                      </form>
+                    </div>
+                    
+                    <div class="col-2 button-container preference-btn-container">
+                      <button type="submit" id="preferenceformBtn">Save</button>
+                    </div>
+                  </div>
+
+                </div>
+                   
+            </div> 
+        
+          </div>
+
+        </main>
+
+      </div>
+
+    </div>
+
+    <div class="footer-wrapper">
+      {% include 'testingapp/footer.html' %}
+    </div>
+
+  </div>
+
+{% else %}  <!-- User is unauthenticated then redirect to login page-->
+
+  <script>
+    location.href = "{% url 'login' %}";
+  </script>
+
+{% endif %}
+</body>
+
+<!-- putting submit button outside for all forms -->
+<script>
+    const form = document.getElementById('emailform');
+    const submitButton = document.getElementById('submitButton');
+  
+    submitButton.addEventListener('click', function() {
+      form.submit();
+    });
+
+    const preferenceForm = document.getElementById('preferenceform');
+    const preferenceformBtn = document.getElementById('preferenceformBtn');
+  
+    preferenceformBtn.addEventListener('click', function() {
+      preferenceForm.submit();
+    });
+
+    const recipegoalForm = document.getElementById('recipegoalform');
+    const recipegoalformBtn = document.getElementById('recipegoalformBtn');
+  
+    recipegoalformBtn.addEventListener('click', function() {
+      recipegoalForm.submit();
+    });
+</script>
+
+<!-- delete account modal -->
+<div class="modal fade Modal-delete" id="accountdeleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content logoutmodal deletemodal">
+          <div class="modal-header">
+              <h5 class="modal-title">Yummy Recipes</h5>
+              <button type="button" class="btn btn-transparent modal-close-btn" data-bs-dismiss="modal" aria-label="Close"><span class="material-symbols-rounded md-top-closeicon">close</span></button>
+          </div>
+
+          <div class="modal-body">
+              <h2>Delete account?</h2>
+              
+              <p2 class="del-te">Are you sure you want to delete your account ?</p2>
+              
+              <div class="callout callout-warning">
+                  <h6><span class="material-symbols-rounded warning-icon" id="warning-icon">warning</span> You can't undo this action</h6>
+              </div>
+          </div>
+          
+          <div class="modal-footer delete-modal-footer">
+              <button type="button" class="btn btn-light footerbtn" data-bs-dismiss="modal">Cancel</button>
+              
+              <form method="post" action="{% url 'delete_account' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+  <div id="newToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex"> 
+          <div class="toast-body">
+
+            <!-- for type -->
+            {% if preference_form.preference_type.value != 'Select' and preference_form.preference_category.value == 'Select' and preference_form.preference_cuisine.value == 'Select' %}
+              Preference set to {{ preference_form.preference_type.value }}
+            {% endif %} 
+
+            <!-- for category -->
+            {% if preference_form.preference_type.value == 'Select' and preference_form.preference_category.value != 'Select' and preference_form.preference_cuisine.value == 'Select' %}
+              Preference set to {{ preference_form.preference_category.value }}
+            {% endif %}
+
+            <!-- for cuisine -->
+            {% if preference_form.preference_type.value == 'Select' and preference_form.preference_category.value == 'Select' and preference_form.preference_cuisine.value != 'Select' %}
+              Preference set to {{ preference_form.preference_cuisine.value }}
+            {% endif %}
+
+            <!-- for type and category -->
+            {% if preference_form.preference_type.value != 'Select' and preference_form.preference_category.value != 'Select' and preference_form.preference_cuisine.value == 'Select' %}
+              Preference set to {{ preference_form.preference_category.value|slice:":-8" }} {{ preference_form.preference_type.value }}
+            {% endif %}
+
+            <!-- for type and cuisine -->
+            {% if preference_form.preference_type.value != 'Select' and preference_form.preference_cuisine.value != 'Select' and preference_form.preference_category.value == 'Select' %}
+              Preference set to {{ preference_form.preference_type.value }} from {{ preference_form.preference_cuisine.value }}
+            {% endif %}
+
+            <!-- for category and cuisine -->
+            {% if preference_form.preference_type.value == 'Select' and preference_form.preference_category.value != 'Select' and preference_form.preference_cuisine.value != 'Select' %}
+              Preference set to {{ preference_form.preference_category.value|slice:":-8" }} {{ preference_form.preference_cuisine.value }}
+            {% endif %}
+
+            <!-- for type, category and cuisine -->
+            {% if preference_form.preference_type.value != 'Select' and preference_form.preference_category.value != 'Select' and preference_form.preference_cuisine.value != 'Select' %}
+            Preference set to {{ preference_form.preference_category.value|slice:":-8" }} {{ preference_form.preference_type.value }} from {{ preference_form.preference_cuisine.value }}
+            {% endif %}
+            
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+  </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+  <div id="recipegoalToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex"> 
+          <div class="toast-body">
+            Goal set for {{goal_form.instance.goal}} recipes in {{current_year}}!
+          </div>
+          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+  </div>
+</div>
+
+{% if messages %}
+  {% for message in messages %}
+    {% if 'preference-set-message' in message.tags %}   
+      <script>
+        var successToast = new bootstrap.Toast(document.getElementById('newToast'));
+        successToast.show();
+
+        $(document).ready(function() {
+          $('#navbar-brand-name').text('Yummy recipes')
+        });
+      </script>
+    {% endif %}
+
+    {% if 'recipes-goal-message' in message.tags %}
+      <script>
+        var successToast = new bootstrap.Toast(document.getElementById('recipegoalToast'));
+        successToast.show();
+
+        $(document).ready(function() {
+          $('#navbar-brand-name').text('Yummy recipes')
+        });
+      </script>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% endblock %}
