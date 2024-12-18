@@ -89,6 +89,5 @@ Technologies used in the project:
 
 
 
-
 <br> <br>
-<i>* requires OpenAI API for image and recipe generation and Spoonacular API for nutritional information </i>
+<i>* requires OpenAI and Gemini API for image and recipe generation and Spoonacular API for nutritional information </i>
