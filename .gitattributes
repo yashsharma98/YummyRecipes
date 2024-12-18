@@ -1,6 +1,6 @@
 # Prioritizing Python on github profile repo card
 *.py linguist-language=Python
 
-*.html linguist-vendored
-*.css linguist-vendored
-*.js linguist-vendored
+*.html linguist-documentation
+*.css linguist-documentation
+*.js linguist-documentation
