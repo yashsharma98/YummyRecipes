@@ -636,7 +636,7 @@
                 
                 <!-- Summarized text will be displayed here -->
                 <div class="recipe-body-content summarized-container" id="summarizedContentContainer" style="display: none;">
-                  <span id="sumheading" style="display: none;">Summarized text</span>
+                  <span id="sumheading" style="display: none;"><h4>Summarized recipe</h4></span>
 
                   <p id="summarizedtext"></p>
                 </div>
@@ -2155,7 +2155,7 @@ $(document).ready(function () {
         contentType: false,
         success: function (response) {
 
-          if (response.status_code != 401 && response.status_code != 429 && response.summarizedContent === 'None'){
+          if (response.status_code != 401 && response.status_code != 429 && response.summarizedContent !== 'None'){
             bodyContent.classList.remove('analyzing');
             summarizedContainer.classList.add('containercolor')
             sHeading.style.display = 'block';

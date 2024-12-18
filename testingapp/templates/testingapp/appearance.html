@@ -598,6 +598,10 @@
                     </div>
                   
                   </div>
+                  
+                  <div class="mt-3 text-secondary ai-recipe-check-response" style="display: none;">
+                    <small><p class="fst-italic px-3">May generate inaccurate themes.</p></small>
+                  </div>
 
                   <script>
                      $(document).ready(function() {
@@ -654,7 +658,9 @@
               </div>
 
               <!-- Generating forms with input prompt using ai -->
-              <script>
+              
+              <!-- Enable script for generating color palettes using OpenAI API -->
+              <!-- <script>
                 $(document).ready(function() {
                   $('#generateRecipeImage').on('click', function(e) {
                       e.preventDefault(); 
@@ -775,6 +781,135 @@
                           }
                       });
                   });
+                });
+              </script> -->
+
+              <!-- Enable this script for generating color palettes using Gemini API -->
+              <script>
+                $(document).ready(function () {
+                    $('#generateRecipeImage').on('click', function (e) {
+                        e.preventDefault();
+            
+                        var emptytitle = $('#id_title').val();
+                        if (!emptytitle.trim()) {
+                            return;
+                        }
+            
+                        $(this).addClass('loading').text('Generating...');
+            
+                        var imgType = $('#AiImageGenerationForm [name="color_description"]').val();
+                        var title = $('#id_title').val();
+                        var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+            
+                        var formData = {
+                            color_description: imgType,
+                            title: title,
+                        };
+            
+                        $.ajax({
+                            url: '{% url "appearance" %}',
+                            method: 'POST',
+                            data: formData,
+                            headers: {
+                                'X-CSRFToken': csrfToken
+                            },
+                            success: function (response) {
+                                if (response.generated_colors) {
+                                    var hexCodes = response.generated_colors.match(/#[a-fA-F0-9]{6}/g);
+                                    $('#colorPreviewContainer').empty();
+            
+                                    if (!hexCodes || hexCodes.length === 0) {
+                                        alert('No valid response found!');
+                                        $('#generateRecipeImage').removeClass('loading').text('Generate');
+                                        return;
+                                    }
+            
+                                    var colorGroups = [];
+                                    for (let i = 0; i < hexCodes.length; i += 7) {
+                                        colorGroups.push(hexCodes.slice(i, i + 7));
+                                    }
+            
+                                    for (var i = 0; i < colorGroups.length; i++) {
+                                        var group = colorGroups[i];
+            
+                                        var paletteContainer = $('<div>').addClass('palette');
+            
+                                        var form = $('<form>').addClass('form-animation').attr({
+                                            action: '{% url "dcp_1" %}',
+                                            method: 'POST',
+                                            title: 'Palette ' + (i + 1),
+                                            id: 'aiform' + (i + 1)
+                                        });
+            
+                                        form.append('{% csrf_token %}');
+            
+                                        var button = $('<button>').addClass('btn btn-light themetext theme_form_btns light_button_bgcolor').attr({
+                                            type: 'button',
+                                            id: 'dcp_buttons',
+                                            onclick: 'submitForm(' + (i + 1) + ')'
+                                        });
+            
+                                        var aiColorCircle = $('<div>').addClass('ai_color_circle');
+            
+                                        aiColorCircle.append('<input type="hidden" name="ai_color_palette" value="aiform' + (i + 1) + '">');
+                                        aiColorCircle.append('<input type="hidden" name="ai_theme" value="ai_theme' + (i + 1) + '">');
+            
+                                        for (var j = 0; j < group.length; j++) {
+                                            aiColorCircle.append('<div class="col color' + (j + 1) + '">' +
+                                                '<input type="hidden" name="ai_color' + (j + 1) + '" value="' + group[j] + '" readonly>' +
+                                                '</div>');
+            
+                                            if (j === 0) {
+                                                aiColorCircle.css('background-color', group[j]);
+                                            }
+            
+                                            if (j >= 3) {
+                                                var aiquadrants = $('<div>').addClass('aiquadrants' + (j - 2));
+                                                var colorIndex = j - 3;
+                                                aiquadrants.css('background-color', group[colorIndex]);
+                                                aiColorCircle.append(aiquadrants);
+                                            }
+                                        }
+            
+                                        var checkIcon = $('<div>').addClass('check-icon').attr({
+                                            id: 'check-icon_aiform' + (i + 1),
+                                            style: 'display: none;'
+                                        });
+                                        checkIcon.append('<span class="material-symbols-rounded check-circle" style="display:block;z-index:9999;">check_circle</span>');
+                                        button.append(checkIcon);
+            
+                                        button.append(aiColorCircle);
+            
+                                        form.append(button);
+            
+                                        paletteContainer.append(form);
+            
+                                        $('#colorPreviewContainer').append(paletteContainer);
+                                    }
+            
+                                    $('#colorPreviewContainer').show();
+            
+                                    $('#generateRecipeImage').text('Regenerate');
+            
+                                    $('#generateRecipeImage').removeClass('loading');
+
+                                    $('.ai-recipe-check-response').fadeIn();
+
+                                } else if (response.error) {
+                                    var successToast = new bootstrap.Toast(document.getElementById('imgErrorToast'));
+                                    successToast.show();
+                                    $('#generateRecipeImage').removeClass('loading').text('Generate');
+                                } else if (response.form_error) {
+                                    var successToast = new bootstrap.Toast(document.getElementById('testsToast'));
+                                    successToast.show();
+                                }
+                            },
+                            error: function (error) {
+                                console.error('Error:', error);
+                                $('#generateRecipeImage').removeClass('loading').text('Generate Image');
+                            }
+                        });
+                    });
                 });
               </script>
 

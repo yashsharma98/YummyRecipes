@@ -33,11 +33,11 @@
     }
     
     #offcanvasExample,#color-preview-form1,.color-preview-navrail,.recipe-cards,.sidebar-cards,.reset-color-btn button,.logout-container,
-    .form-submit-btns button:not(.dark-theme-btns button),.qv-offcanvas,.explore-tab button,.img-del-btn .image-field .image-input,
-    .bottom-links a,.bottom-links button,.upro-first-row,.logoutmodal,.logoutmodal .modal-body-footer a,.single-recipe-delete .delete-link a,.timeline-tab-1 button,.timeline-tab-1 .dropdown-btn,
+    .form-submit-btns button:not(.dark-theme-btns button),.explore-tab button,.img-del-btn .image-field .image-input,
+    .bottom-links a,.bottom-links button,.upro-first-row,.logoutmodal .modal-body-footer a,.single-recipe-delete .delete-link a,.timeline-tab-1 button,.timeline-tab-1 .dropdown-btn,
     .dcp-forms button,.nb-rightimg-dropmenu,.hover-profile-card,.more-horiz-icon,.body-detail-dropdown-content,.button-container button,
     .form-btns button:first-child:not(.generate_ai_img_btn),.dropmenu-details-links,.recipe-details-1 .like-dislike-div button,.nav-tabs button,
-    .img-input-btn,.author-recipe-cards p,.compare-recipes-form-container form button,.notification-offcanvas,
+    .img-input-btn,.author-recipe-cards p,.compare-recipes-form-container form button,
     .footer-waveline,.comments-offcanvas,.feedback-offcanvas,.credits-grid-container .columns,.recipe-content-actions button,.recipe-content-actions a button,.compare-recipe-collpase,
     .creditmodal .modal-body-footer button:last-child,.search-profile-cards,
     .autocomplete-items div::before,.accordion-button,.timeline-tab-1 ul.dropdown-menu,
@@ -66,15 +66,15 @@
     }
 
     .spoonacular-salmon:not(.spoonacular-caption.spoonacular-salmon) {
-       color: var(--hover_color) !important;
+       color: var(--tertiary_color) !important;
     }
 
     .spoonacular-nutrition-visualization-bar.spoonacular-salmon {
-        background-color: var(--hover_color) !important;
+        background-color: var(--primary_color) !important;
     }
 
     .spoonacular-blue:not(.spoonacular-caption.spoonacular-blue) {
-        color: var(--neutral_primary);
+        color: var(--tertiary_color);
     }
 
     .spoonacular-nutrition-visualization-bar.spoonacular-blue {
@@ -89,12 +89,12 @@
     }
 
     #navoffcanvasbody,#color-preview-form2,.primary-wrapper,.dynamic-recipes h1:not(.popular-card-container h1,.recipe-body h1),.sidebar-header,.sidebar-header-h1,#history-card,
-    .qv-offcanvas-title-container,.qv-offcanvas-table-wrapper:not(.compare-recipes-table),.explore-tab:not(.dashboard-recipe-tab-btns),.timeline-tab-1,.dynamic-recipes h5,.logoutmodal .modal-body,.logoutmodal .modal-body-footer,
+    .logoutmodal,.notification-offcanvas,.qv-offcanvas,.explore-tab:not(.dashboard-recipe-tab-btns),.timeline-tab-1,.dynamic-recipes h5,.logoutmodal .modal-body,.logoutmodal .modal-body-footer,
     .nb-dropmenu-content,.dropmenu-details-wrapper:not(.dropmenu-details-links),.comment-input textarea,.autocomplete-items,.alert-notification,.notification-footer button,
     .upro-second-row input,.upro-second-row textarea,.upro-second-row select,.navrail,.navbar,body,.logout-wrapper,.logoutmodal .modal-body-footer button,.tot_recipe_badge,
     .spotlight-modal-content,.dashboard-card-body .btn-group:nth-child(2) a,.dashboard-card-body .btn-group:nth-child(1) p,.grid-container .columns:nth-child(6) .column-content button,
     .img-remove-button,.ai-theme-form-content input:focus:not(.generate-recipe-form input:focus),.pages-options-autocomplete,.history-options-autocomplete,.image-item,
-    .preference-form form select,.dashboard-recipe-data .recipe-count,.dashboard-recipe-tab-btns,.search-autocomplete-chips .search-chips,.recipe-goal-form form input{
+    .preference-form form select,.dashboard-recipe-data .recipe-count,.dashboard-recipe-tab-btns,.recipe-goal-form form input{
         background-color: var(--secondary_color);
     }
     
@@ -126,7 +126,7 @@
     .user-detail-modal .modal-body,.share-recipe-modal .modal-body .nav-tabs button,.spoonacular-nutrient-name,.spoonacular-nutrient-value,.spoonacular-caption.spoonacular-salmon,.spoonacular-caption.spoonacular-blue,
     .recipe-detail-table,.network-history-modal .modal-body .button-content div,.network-history-modal .modal-body .network-history-data div,.search-autocomplete-chips .search-chips,.filter-form select,.filter-form input,.filter-form input::placeholder,
     .filter-form-button button,.trending-searches-container::before,.recipe-goal-form form input,.shopping-list-modal .modal-body ul,.simpleview-offcanvas-body,.weathermodal .modal-body table tr th,.weathermodal .modal-body table tr td,
-    .rightside-searchbar .notification-badge,.notification-container div:last-child button{
+    .rightside-searchbar .notification-badge,.notification-container div:last-child button,.generated-recipe-content,.ai-recipe-check-response{
         color: var(--tertiary_color);
     }
 
@@ -214,7 +214,8 @@
         color: var(--tertiary_color);
     }
 
-    .user-detail-table table th,.user-detail-table table td,.uprofile-form-label:not(.uprofile-first-label),.uprofile-input{
+    .user-detail-table table th,.user-detail-table table td,.uprofile-form-label:not(.uprofile-first-label),.uprofile-input,
+    .qv-offcanvas-table-wrapper table th,.qv-offcanvas-table-wrapper table td {
         /* border-bottom: 0.5px solid {{ user.userprofile.primary_color }}; */
         border-bottom: 0.5px solid var(--neutral_secondary);
         color: var(--tertiary_color);
@@ -323,11 +324,12 @@
     }
 
     .search-autocomplete-chips .search-chips{
-        border: 1.5px solid var(--secondary_color);
+        border: 1.5px solid var(--primary_color);
     }
 
-    .search-autocomplete-chips div:hover{
+    .search-autocomplete-chips .search-chips:hover{
         border: 1.5px solid var(--hover_color);
+        background: var(--hover_color);
     }
 
     .ai-bottom-right-quad{

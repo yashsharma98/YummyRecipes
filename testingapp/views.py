@@ -86,7 +86,32 @@ from allauth.socialaccount.views import SignupView
 from allauth.account.models import EmailAddress
 from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView
-
+from io import BytesIO
+from gtts import gTTS
+import os
+from pathlib import Path
+from django.template.defaultfilters import striptags
+import base64
+from bs4 import BeautifulSoup
+from django.contrib.sessions.models import Session
+from PIL import Image
+from collections import Counter
+import openai
+import requests
+from django.core.files.base import ContentFile
+from urllib import parse
+from django.core.files.storage import default_storage
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from email.mime.image import MIMEImage
+from b2sdk.v1 import *
+from tempfile import NamedTemporaryFile
+from django.urls import reverse
+from django.contrib.sites.shortcuts import get_current_site
+import boto3
+import time
+import google.generativeai as genai
 
 def handling_404(request, exception):
     return render(request, 'testingapp/404.html') 
@@ -195,23 +220,41 @@ def appearance(request):
                     title = image_generation_form.cleaned_data['title']
                     # print(title)
 
-                    openai.api_key = settings.OPENAI_API_KEY
+                    # Generating colors paletts using OpenAI API
+
+                    # openai.api_key = settings.OPENAI_API_KEY
                     
-                    color_prompt = f"Convert the following verbal description of a color palette into a set of 2 different palettes with list of 4 hexadecimal color code starting with primary color for cards (this color should be light) , secondary color for background (should be lighter), tertiary color for text (this color should be extremely dark), active link color (this color should be different), additionally generate 3 more color's with first fpr hovering the links (this color should be light), while others should be contrasty first being primary neutral (should be medium light), second being neutral secondary (should be moderately light) : {title}."
+                    # color_prompt = f"Convert the following verbal description of a color palette into a set of 2 different palettes with list of 4 hexadecimal color code starting with primary color for cards (this color should be light) , secondary color for background (should be lighter), tertiary color for text (this color should be extremely dark), active link color (this color should be different), additionally generate 3 more color's with first fpr hovering the links (this color should be light), while others should be contrasty first being primary neutral (should be medium light), second being neutral secondary (should be moderately light) : {title}."
 
-                    # Generate an image based on the user's input
-                    response = openai.Completion.create(
-                        engine="gpt-3.5-turbo-instruct",
-                        prompt=color_prompt,  # Use the title as the prompt
-                        max_tokens=400,
-                        temperature=0.7,
+                    # # Generate an image based on the user's input
+                    # response = openai.Completion.create(
+                    #     engine="gpt-3.5-turbo-instruct",
+                    #     prompt=color_prompt,  # Use the title as the prompt
+                    #     max_tokens=400,
+                    #     temperature=0.7,
+                    # )
+
+                    # generated_colors = response.choices[0].text.strip()
+                    # # print(generated_colors)
+
+                    # if hex_codes:
+                    #     return JsonResponse({"generated_colors": hex_codes})
+
+                    '''----------------------------------------------------------------'''
+
+                    # Generating colors paletts using Gemini API
+                    genai.configure(api_key=settings.GEMINI_API_KEY)
+
+                    model = genai.GenerativeModel("gemini-1.5-flash")
+                    response = model.generate_content(
+                        f"Create four distinct color palettes for a UI design system, with each palette containing at least seven different colors for the following elements: Primary Color (for cards, buttons, etc.), which should be light and stand out against the background; Secondary Color (for the foreground, background on the body, and bootstrap modal), which should be lighter than the primary color and suitable for larger background areas; Tertiary Color (for text color), which should be most darkest to ensure excellent readability against lighter backgrounds; Active Link Color (background color for active links), which should be distinct and different from the primary, secondary, and tertiary colors; Hover Color (for hovering over links, cards, buttons, etc.), which should be light and provide clear visual feedback on interaction; Neutral Primary (a contrasting, punchy color for specific UI elements), which should be medium-light and complement the other colors; and Neutral Secondary (a lighter contrasting color), which should be moderately light and distinct from the neutral primary, ideal for subtle highlights or less dominant UI elements. Each palette should ensure the colors work harmoniously together for a balanced, aesthetically pleasing design suitable for web or app interfaces."
+                        f": {title}."
                     )
-
-                    generated_colors = response.choices[0].text.strip()
-                    # print(generated_colors)
-
-                    if generated_colors:
-                        return JsonResponse({"generated_colors": generated_colors})
+                    hex_codes = extract_hex_codes(response.text)
+                    if hex_codes:
+                        return JsonResponse({"generated_colors": ''.join(hex_codes)})
+                    else:
+                        return JsonResponse({"error": "No hex codes found in the response."})
 
 
             except Exception as e:
@@ -2067,18 +2110,36 @@ def summarize_content(request):
     if request.method == 'POST':
         content = request.POST.get('content', '')
         
-        try:
-            summarized_content, status_code  = summarize_text(content)
-    
-            # uncomment below line if not using typing simulation in the template
-            # safe_summarized_content = SafeString(summarized_content) 
+        # If OpenAI API is available
+        if settings.OPENAI_API_KEY:
+            try:
+                summarized_content, status_code  = summarize_text(content)
+        
+                # uncomment below line if not using typing simulation in the template
+                # safe_summarized_content = SafeString(summarized_content) 
 
-            safe_summarized_content = strip_tags(summarized_content)
+                safe_summarized_content = strip_tags(summarized_content)
 
-            return JsonResponse({'summarizedContent': safe_summarized_content,'status_code':status_code})
-                
-        except Exception as e:
-            return JsonResponse({'error': str(e)})
+                return JsonResponse({'summarizedContent': safe_summarized_content,'status_code':status_code})
+            
+            except Exception as e:
+                return JsonResponse({'error': str(e)})
+            
+        # Else use GEMINI API
+        else:
+            try:
+                post_content = striptags(content)
+                genai.configure(api_key=settings.GEMINI_API_KEY)
+
+                model = genai.GenerativeModel("gemini-1.5-flash")
+                response = model.generate_content(
+                    f"Summarize the recipe instructions {post_content}"
+                )
+                return JsonResponse({'summarizedContent': response.text})
+
+            except Exception as e:
+                return JsonResponse({'error': str(e)})
+
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
@@ -2104,22 +2165,7 @@ def summarize_text(text):
     else:
         a = response.status_code
         return None, response.status_code
-    
-from gtts import gTTS
-import os
 
-    
-from pathlib import Path
-import openai
-from django.core.files.storage import default_storage
-import os
-from django.template.defaultfilters import striptags
-import base64
-from bs4 import BeautifulSoup
-from django.contrib.sessions.models import Session
-from PIL import Image
-from collections import Counter
-import os
 
 def extract_dominant_colors(image_path, num_colors=7):
     # Open the image
@@ -2928,24 +2974,9 @@ def dislike_view(request):
     # return redirect('viewpost',post_id)
 
 
+def extract_hex_codes(text):
+    return re.findall(r'#[a-fA-F0-9]{6}', text)
 
-from io import BytesIO
-import openai
-import requests
-from django.core.files.base import ContentFile
-from urllib import parse
-from django.core.files.storage import default_storage
-
-from django.core.mail import send_mail, EmailMultiAlternatives
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
-from email.mime.image import MIMEImage
-from b2sdk.v1 import *
-from tempfile import NamedTemporaryFile
-from django.urls import reverse
-from django.contrib.sites.shortcuts import get_current_site
-import boto3
-import time
 
 @login_required(login_url='login')
 def post_post_view(request):
@@ -3779,55 +3810,78 @@ def generate_recipe_with_ai_image(request):
             if image_generation_form.is_valid():
                 # Get the title from the image generation form
                 title = image_generation_form.cleaned_data['title']
-                # print(title)
 
-                openai.api_key = settings.OPENAI_API_KEY
+                # if OpenAI API is available then generate both recipe and its image
+                if openai.api_key:
+                    openai.api_key = settings.OPENAI_API_KEY
 
-                # Call the second function to generate the recipe
-                generated_recipe = generate_recipe(title)
+                    # Generate an image based on the user's input
+                    response = openai.Image.create(
+                        prompt=title,
+                        n=1,
+                        size="256x256"
+                    )
 
-                # Generate an image based on the user's input
-                response = openai.Image.create(
-                    prompt=title,  # Use the title as the prompt
-                    n=1,
-                    size="256x256"
-                )
-
-                try:
-                    # Download the generated image
-                    recipe_image_url = response.data[0].url
-                except (AttributeError, KeyError):
-                    # Handle the case where the response structure doesn't provide a direct URL
-                    recipe_image_url = None
-
+                    try:
+                        # Download the generated image
+                        recipe_image_url = response.data[0].url
+                    except (AttributeError, KeyError):
+                        # Handle the case where the response structure doesn't provide a direct URL
+                        recipe_image_url = None
                 
-                formatted_generated_recipe = generated_recipe.replace('\n', '<br>')
+                    # Call the second function to generate the recipe    
+                    generated_recipe = generate_recipe(title)
 
-                if recipe_image_url:
-                    return JsonResponse({"recipe_image_url": recipe_image_url,"generated_recipe": formatted_generated_recipe})
+                    formatted_generated_recipe = generated_recipe.replace('\n', '<br>')
+
+                    if recipe_image_url:
+                        return JsonResponse({"recipe_image_url": recipe_image_url,"generated_recipe": formatted_generated_recipe})
+                
+                # Else use Gemini API to generate textual recipe only
+                else: 
+                    generated_recipe = generate_recipe(title)
+
+                    formatted_generated_recipe = generated_recipe.replace('\n', '')
+
+                    return JsonResponse({"recipe_image_url": None,"generated_recipe": formatted_generated_recipe})
 
 
         except Exception as e:
             error = str(e)
             return JsonResponse({"error": error})
-        
-    form  = AIRecipeGenerationForm()    
-    return render(request, 'testingapp/generate_recipe.html',{'form': form})
+
+    form = AIRecipeGenerationForm()
+    return render(request, 'testingapp/generate_recipe.html', {'form': form})
+
 
 
 def generate_recipe(title):
     try:
-        # Generate the recipe using the provided title
-        recipe_prompt = f"Generate a recipe for {title}."
-        recipe_response = openai.Completion.create(
-            engine="gpt-3.5-turbo-instruct",
-            prompt=recipe_prompt,
-            max_tokens=50,
-            temperature=0.7,
-            n=1,
+        # Generate recipe using OpenAI API
+        # recipe_prompt = f"Generate a recipe for {title}."
+        # recipe_response = openai.Completion.create(
+        #     engine="gpt-3.5-turbo-instruct",
+        #     prompt=recipe_prompt,
+        #     max_tokens=50,
+        #     temperature=0.7,
+        #     n=1,
+        # )
+
+        # generated_recipe = recipe_response.choices[0].text.strip()
+
+        # return generated_recipe
+
+        '''-------------------------------------------------------------'''
+
+        # Generating recipe using Gemini API
+        genai.configure(api_key=settings.GEMINI_API_KEY)
+
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(
+            f"Generate a recipe for {title} with detailed nutritional information in grams only not for ingredients (nutritional inforamtion should be in table format and at top) . Also provide prep time, cook time, servings, variation and best time to consume. Include a numbered bullet-point list for ingredients and instructions. Do not use any special characters in anywhere just use periods (.) in the bullet points. Output should be in HTML formatted without ''' and html. At last add a happy cooking message or related similar with emoji with some vertical space."
         )
 
-        generated_recipe = recipe_response.choices[0].text.strip()
+        generated_recipe = response.text
 
         return generated_recipe
 

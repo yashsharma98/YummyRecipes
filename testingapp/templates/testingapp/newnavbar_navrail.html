@@ -1252,7 +1252,7 @@
                         <h3 class="article-title">{{post.title}}</h3>
                         <p>
                             <ul>
-                                <li><img src="{{ post.author.profile.profile_img.url }}" style="width: 30px; height: 30px; border-radius:100px" alt="Image"></li>
+                                <li><img src="{{ post.author.profile.profile_img.url }}" alt="Image"></li>
                                 <li><div class="text-truncate">{{post.author.first_name}} {{post.author.last_name}}</div>  {{post.get_date}} &#11825; {% get_hit_count for post %} views &#11825; {{ post.read_time|pluralize_min }}</li>
                             </ul>
                         </p>
@@ -1344,7 +1344,7 @@
                         <h3 class="article-title">{{post.title}}</h3>
                         <p>
                             <ul>
-                                <li><img src="{{ post.author.profile.profile_img.url }}" style="width: 30px; height: 30px; border-radius:100px" alt="Image"></li>
+                                <li><img src="{{ post.author.profile.profile_img.url }}" alt="Image"></li>
                                 <li><div class="text-truncate">{{post.author.first_name}} {{post.author.last_name}}</div>  {{post.get_date}} &#11825; {% get_hit_count for post %} views &#11825; {{ post.read_time|pluralize_min }}</li>
                             </ul>
                         </p>

@@ -31,9 +31,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-67u-yp=hkj)j^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-'''When debug is set to false and to serve static files (css, images) in order to run the project locally 
-add your AWS_ACCESS_KEY_ID & AWS_SECRET_ACCESS_KEY in the else part of 'DATABASE_URL' in os.environ)
-'''
+# When debug is set to false we need to serve static files (css, images) for ruuning locally from
+# a server (currently we are using AWS S3, for that we need id & secret key)
 
 # DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
@@ -112,12 +111,14 @@ OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 
 NUTRITION_API_KEY = os.environ.get('NUTRITION_API_KEY')
 
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+
 # Mailgun api 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'yash.sharma44@yahoo.com'
-EMAIL_HOST_PASSWORD = '8hgX2tmbT4EPqjzN'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = '"Yummy Recipes" <yummyrecipes@django.com>'
 
@@ -285,8 +286,6 @@ STORAGES = {
 }
 
 
-# Configured for AWS S3
-
 if 'DATABASE_URL' in os.environ:
 
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
@@ -301,20 +300,6 @@ if 'DATABASE_URL' in os.environ:
 
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/images/'
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# else:
-#     AWS_ACCESS_KEY_ID = ''  # Enter your AWS_ACCESS_KEY_ID
-#     AWS_SECRET_ACCESS_KEY = ''    # Enter your AWS_SECRET_ACCESS_KEY
-#     AWS_STORAGE_BUCKET_NAME = ''     # Enter your AWS_STORAGE_BUCKET_NAME
-#     AWS_S3_REGION_NAME = ''  # Enter your AWS_S3_REGION_NAME
-
-#     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-
-#     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-#     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-#     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/images/'
-#     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 TINYMCE_DEFAULT_CONFIG = {

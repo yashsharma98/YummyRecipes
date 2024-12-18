@@ -2174,13 +2174,13 @@ html *{
 }
 
 .search-autocomplete-chips .search-chips{
-    background: var(--sidecardcolor);
+    background: transparent;
     border-radius: 20px;
     font-size: 0.8em;
     margin: 0 5px;
     padding: 6px 10px;
-    border: 1.5px solid var(--sidecardcolor);
-    transition: border 0.4s ease;
+    border: 1.5px solid var(--sidebarbgcolor);
+    transition: background 0.4s ease,border 0.4s ease;
     /* padding-bottom: 8px; */
 }
 
@@ -2188,9 +2188,10 @@ html *{
     margin-left: 0;
 }
 
-.search-autocomplete-chips div:hover{
-    cursor: pointer;
+.search-autocomplete-chips .search-chips:hover{
+    background: var(--hovercolor);
     border: 1.5px solid var(--hovercolor);
+    cursor: pointer;
 }
 
 .search-autocomplete-chips::-webkit-scrollbar,
@@ -2299,7 +2300,8 @@ html *{
 }
 
 .modal-search form input::placeholder,
-.weathermodal form input::placeholder{
+.weathermodal form input::placeholder,
+.ai-theme-form-content input::placeholder{
     transform: translateX(0);
     font-size: 0.95em;
     opacity: 0.95;
@@ -2311,7 +2313,8 @@ html *{
 }
 
 .weathermodal .modal-body form input:focus::placeholder,
-.modal-search form input:focus::placeholder{
+.modal-search form input:focus::placeholder,
+.ai-theme-form-content input:focus::placeholder{
     opacity: 0;
     transform: translateX(-10px);
     transition: opacity 0.4s ease, transform 0.4s ease;
